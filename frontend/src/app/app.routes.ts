@@ -18,6 +18,10 @@ export const routes: Routes = [
             {
                 path: 'history',
                 loadComponent: () => import('./features/history/history.component').then(m => m.HistoryComponent)
+            },
+            {
+                path: 'meal-plan',
+                loadComponent: () => import('./features/meal-plan/meal-plan.component').then(m => m.MealPlanComponent)
             }
         ]
     },

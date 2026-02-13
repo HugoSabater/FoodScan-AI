@@ -56,6 +56,14 @@ router.get('/users/:id', userController.getUserById);
  */
 router.get('/users/:userId/history', scanController.getUserHistory);
 
+/**
+ * @route   POST /api/users/meal-plan
+ * @desc    Generate 1-day meal plan
+ * @access  Public
+ * @body    { userId, profile }
+ */
+router.post('/users/meal-plan', userController.getMealPlan);
+
 // =====================================
 // PRODUCTS
 // =====================================
@@ -66,6 +74,13 @@ router.get('/users/:userId/history', scanController.getUserHistory);
  * @access  Public
  */
 router.get('/products', productController.getAllProducts);
+
+/**
+ * @route   GET /api/products/trending
+ * @desc    Get trending products for Quick Scan
+ * @access  Public
+ */
+router.get('/products/trending', productController.getTrendingProducts);
 
 /**
  * @route   GET /api/products/:barcode

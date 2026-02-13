@@ -65,26 +65,46 @@
     }
 
     <!-- ═══════════════════════════════════════ -->
-    <!-- QUICK SCAN PANEL (DEMO)                -->
+    <!-- QUICK SCAN PANEL (TRENDING PRODUCTS)  -->
     <!-- ═══════════════════════════════════════ -->
     @if (!scanService.hasResult()) {
     <div class="c-quick-actions">
         <h4 class="c-quick-actions__title">
             <i class="fa-solid fa-bolt"></i>
-            Escaneo Rápido (Demo)
+            Escaneo Rápido
         </h4>
 
+        <!-- Loading State -->
+        @if (trendingLoading()) {
         <div class="c-quick-actions__chips">
-            @for (demo of DEMO_BARCODES; track demo.code) {
+            <div class="c-quick-actions__loading">
+                <i class="fa-solid fa-spinner fa-spin"></i>
+                Cargando productos...
+            </div>
+        </div>
+        } @else if (trendingProducts().length > 0) {
+        <div class="c-quick-actions__chips">
+            @for (product of trendingProducts(); track product.barcode) {
             <button class="c-quick-actions__chip" [class.c-quick-actions__chip--active]="scanService.loading()"
-                [disabled]="scanService.loading()" (click)="simulateScan(demo.code)">
-                <i class="c-quick-actions__icon fa-solid" [class.fa-jar]="demo.label === 'Nutella'"
-                    [class.fa-bottle-droplet]="demo.label === 'Coca-Cola Zero'">
-                </i>
-                <span class="c-quick-actions__label">{{ demo.label }}</span>
+                [disabled]="scanService.loading()" (click)="simulateScan(product.barcode)">
+                <!-- Product Image or Fallback Icon -->
+                @if (product.image_url) {
+                <img [src]="product.image_url" [alt]="product.name" class="c-quick-actions__image" />
+                } @else {
+                <i class="c-quick-actions__icon fa-solid fa-box"></i>
+                }
+                <span class="c-quick-actions__label">{{ product.name }}</span>
             </button>
             }
         </div>
+        } @else {
+        <div class="c-quick-actions__chips">
+            <p class="c-quick-actions__empty">
+                <i class="fa-solid fa-circle-info"></i>
+                No hay productos disponibles
+            </p>
+        </div>
+        }
     </div>
     }
 

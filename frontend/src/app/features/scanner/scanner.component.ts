@@ -1,10 +1,10 @@
-import { Component, signal } from '@angular/core';
+import { Component, signal, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ZXingScannerModule } from '@zxing/ngx-scanner';
 import { BarcodeFormat } from '@zxing/library';
 
-import { ScanService } from '../../core/services/scan.service';
+import { ScanService, TrendingProduct } from '../../core/services/scan.service';
 import { ProductCardComponent, ProductCardData } from '../../shared/components/product-card/product-card.component';
 import { ProductDetailModalComponent } from '../../shared/components/product-detail-modal/product-detail-modal.component';
 
@@ -15,7 +15,7 @@ import { ProductDetailModalComponent } from '../../shared/components/product-det
     templateUrl: './scanner.component.html',
     styleUrl: './scanner.component.scss',
 })
-export class ScannerComponent {
+export class ScannerComponent implements OnInit {
 
     // ── Scanner Config ────────────────────────
     readonly allowedFormats = [
@@ -33,6 +33,13 @@ export class ScannerComponent {
     /** Status message shown in the overlay */
     readonly statusMessage = signal('Buscando productos...');
 
+    // ── Quick Scan (Trending Products) ────────
+    /** Trending products from OpenFoodFacts API */
+    readonly trendingProducts = signal<TrendingProduct[]>([]);
+
+    /** Loading state for trending products */
+    readonly trendingLoading = signal(true);
+
     // ── Dev Simulation ────────────────────────
     readonly DEMO_BARCODES = [
         { label: 'Nutella', code: '80135463' },
@@ -47,6 +54,30 @@ export class ScannerComponent {
     readonly manualBarcode = signal('');
 
     constructor(public readonly scanService: ScanService) { }
+
+    ngOnInit(): void {
+        this.loadTrendingProducts();
+    }
+
+    // ── API Methods ───────────────────────────
+
+    /**
+     * Load trending products from backend for Quick Scan
+     */
+    private loadTrendingProducts(): void {
+        this.trendingLoading.set(true);
+        this.scanService.getTrending().subscribe({
+            next: (response) => {
+                this.trendingProducts.set(response.data);
+                this.trendingLoading.set(false);
+            },
+            error: (err) => {
+                console.error('Failed to load trending products:', err);
+                this.trendingLoading.set(false);
+                // Fallback: keep empty array, UI will handle gracefully
+            },
+        });
+    }
 
     // ── Event Handlers ────────────────────────
 

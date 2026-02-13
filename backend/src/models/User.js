@@ -10,14 +10,7 @@ const User = sequelize.define(
       primaryKey: true,
       autoIncrement: true,
     },
-    username: {
-      type: DataTypes.STRING(50),
-      allowNull: false,
-      unique: true,
-      validate: {
-        len: [3, 50],
-      },
-    },
+    // username removed as not present in DB schema
     email: {
       type: DataTypes.STRING(100),
       allowNull: false,
@@ -28,6 +21,7 @@ const User = sequelize.define(
     },
     password: {
       type: DataTypes.STRING(255),
+      field: 'password_hash',
       allowNull: false,
       validate: {
         len: [6, 255],

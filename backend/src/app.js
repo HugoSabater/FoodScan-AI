@@ -23,7 +23,23 @@ app.use(
     origin: env.cors.origin,
     credentials: env.cors.credentials,
   })
+    credentials: env.cors.credentials,
+  })
 );
+
+// Rate Limiting
+const rateLimit = require('express-rate-limit');
+const limiter = rateLimit({
+  windowMs: 15 * 60 * 1000, // 15 minutes
+  max: 100, // limit each IP to 100 requests per windowMs
+  standardHeaders: true,
+  legacyHeaders: false,
+  message: {
+    success: false,
+    message: 'Too many requests, please try again later.',
+  },
+});
+app.use(limiter);
 
 // Body Parsing Middlewares
 app.use(express.json({ limit: '10mb' }));
@@ -43,9 +59,9 @@ app.use('/api', apiRoutes);
 app.get('/', (_req, res) => {
   res.json({
     name: 'FoodScan AI API',
-    version: '1.0.0',
+    version: '1.1.0',
     description: 'Backend API para escaneo y análisis nutricional de productos',
-    author: 'Hugo Cabeza',
+    author: 'Hugo Sabater',
     environment: env.nodeEnv,
     endpoints: {
       health: 'GET /api/health',

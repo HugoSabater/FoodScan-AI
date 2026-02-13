@@ -93,7 +93,7 @@ export class ScanService {
         this.http
             .post<ScanResponse>('/api/scan', {
                 barcode,
-                userId: 2, // Keep for database record
+                userId: 1, // Keep for database record
                 customProfile, // Send user preferences
             })
             .subscribe({
@@ -123,6 +123,14 @@ export class ScanService {
     }
 
     /**
+     * Get trending products for Quick Scan
+     * @returns Observable of trending products
+     */
+    getTrending() {
+        return this.http.get<TrendingResponse>('/api/products/trending');
+    }
+
+    /**
      * Get user scan history
      * @param userId User ID to fetch history for
      * @returns Observable of scan history items
@@ -130,6 +138,22 @@ export class ScanService {
     getHistory(userId: number) {
         return this.http.get<HistoryResponse>(`/api/users/${userId}/history`);
     }
+}
+
+/**
+ * Trending product from OpenFoodFacts
+ */
+export interface TrendingProduct {
+    barcode: string;
+    name: string;
+    brand: string;
+    image_url: string | null;
+}
+
+export interface TrendingResponse {
+    success: boolean;
+    count: number;
+    data: TrendingProduct[];
 }
 
 /**

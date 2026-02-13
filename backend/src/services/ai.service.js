@@ -107,6 +107,84 @@ Analiza si este producto es adecuado para este usuario. Responde SOLO con JSON.`
   }
 };
 
+/**
+ * Generate a 1-day meal plan based on user profile
+ * @param {Object} profile - User allergies and dietary preferences
+ * @returns {Promise<Array>} Meal plan
+ */
+const generateMealPlan = async (profile) => {
+  // eslint-disable-next-line no-console
+  console.log('🤖 Generando plan de comidas para dieta:', profile.diet);
+
+  try {
+    const userPrompt = `Eres un chef nutricionista experto. Crea un plan de comidas de 1 día (Desayuno, Comida, Cena) estrictamente basado en este perfil:
+
+Dieta: ${profile.diet || 'Equilibrada'}
+Alergias: ${profile.allergies?.length > 0 ? profile.allergies.join(', ') : 'Ninguna'}
+
+Salida OBLIGATORIA en formato JSON Array:
+[
+  { "type": "Desayuno", "name": "Nombre del plato", "calories": 400, "ingredients": ["ing1", "ing2"], "reason": "Por qué encaja con la dieta" },
+  { "type": "Comida", ... },
+  { "type": "Cena", ... }
+]
+No uses Markdown, solo JSON puro.`;
+
+    const completion = await groq.chat.completions.create({
+      model: 'llama-3.3-70b-versatile',
+      messages: [{ role: 'user', content: userPrompt }],
+      temperature: 0.7,
+      max_tokens: 1000,
+      // Note: We don't use response_format: { type: 'json_object' } because we want an Array, not an Object
+    });
+
+    const responseContent = completion.choices[0]?.message?.content;
+
+    if (!responseContent) {
+      throw new Error('Empty response from Groq');
+    }
+
+    // Clean markdown code blocks if present
+    const jsonString = responseContent.replace(/```json|```/g, '').trim();
+
+    // Parse JSON
+    const mealPlan = JSON.parse(jsonString);
+
+    if (!Array.isArray(mealPlan)) {
+      throw new Error('AI response is not an array');
+    }
+
+    return mealPlan;
+  } catch (error) {
+    console.error('❌ ERROR REAL GROQ (Meal Plan):', error);
+    // Fallback data
+    return [
+      {
+        type: 'Desayuno',
+        name: 'Avena con frutas (Fallback)',
+        calories: 350,
+        ingredients: ['Avena', 'Plátano', 'Leche semidesnatada'],
+        reason: 'Opción equilibrada por defecto',
+      },
+      {
+        type: 'Comida',
+        name: 'Pollo a la plancha con ensalada (Fallback)',
+        calories: 500,
+        ingredients: ['Pechuga de pollo', 'Lechuga', 'Tomate', 'Aceite de oliva'],
+        reason: 'Alto en proteínas y vegetales',
+      },
+      {
+        type: 'Cena',
+        name: 'Pescado al horno con verduras (Fallback)',
+        calories: 400,
+        ingredients: ['Merluza', 'Calabacín', 'Zanahoria'],
+        reason: 'Ligero y nutritivo',
+      },
+    ];
+  }
+};
+
 module.exports = {
   analyzeHealth,
+  generateMealPlan,
 };

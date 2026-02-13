@@ -90,7 +90,7 @@ const scanProduct = async (req, res, next) => {
     // Step 4: Create scan record
     const scan = await Scan.create({
       user_id: userId,
-      product_id: product.id,
+      product_code: product.barcode,
       scanned_at: new Date(),
     });
 
@@ -104,7 +104,6 @@ const scanProduct = async (req, res, next) => {
           scanned_at: scan.scanned_at,
         },
         product: {
-          id: product.id,
           barcode: product.barcode,
           name: product.name,
           brand: product.brand,
@@ -147,7 +146,7 @@ const getUserHistory = async (req, res, next) => {
         {
           model: Product,
           as: 'product',
-          attributes: ['id', 'barcode', 'name', 'brand', 'nutri_score', 'image_url'],
+          attributes: ['barcode', 'name', 'brand', 'nutri_score', 'image_url'],
         },
       ],
       order: [['scanned_at', 'DESC']],

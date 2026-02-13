@@ -4,13 +4,10 @@ const { sequelize } = require('../config/database');
 const Product = sequelize.define(
   'Product',
   {
-    id: {
-      type: DataTypes.INTEGER,
-      primaryKey: true,
-      autoIncrement: true,
-    },
     barcode: {
       type: DataTypes.STRING(50),
+      primaryKey: true,
+      field: 'code',
       allowNull: false,
       unique: true,
       validate: {

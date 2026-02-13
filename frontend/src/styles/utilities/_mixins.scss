@@ -129,6 +129,39 @@
     }
 }
 
+@mixin button-primary {
+    @include button-base;
+    background: $color-primary;
+    color: $color-text-inverse;
+
+    &:hover:not(:disabled) {
+        background: $color-primary-dark;
+    }
+}
+
+@mixin button-secondary {
+    @include button-base;
+    background: transparent;
+    border: 1px solid $color-border;
+    color: $color-text;
+
+    &:hover:not(:disabled) {
+        background: $color-bg;
+        border-color: $color-text-light;
+    }
+}
+
+@mixin button-text {
+    @include button-base;
+    background: transparent;
+    color: $color-primary;
+    padding: $spacing-xs $spacing-sm;
+
+    &:hover:not(:disabled) {
+        background: hsla(145, 63%, 42%, 0.1);
+    }
+}
+
 // ── Truncate Text ───────────────────────────
 @mixin truncate($lines: 1) {
     @if $lines ==1 {

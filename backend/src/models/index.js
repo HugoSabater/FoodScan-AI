@@ -21,7 +21,8 @@ User.hasMany(Scan, {
 
 // Product has many Scans
 Product.hasMany(Scan, {
-  foreignKey: 'product_id',
+  foreignKey: 'product_code',
+  sourceKey: 'barcode',
   as: 'scans',
   onDelete: 'CASCADE',
 });
@@ -34,7 +35,8 @@ Scan.belongsTo(User, {
 
 // Scan belongs to Product
 Scan.belongsTo(Product, {
-  foreignKey: 'product_id',
+  foreignKey: 'product_code',
+  targetKey: 'barcode',
   as: 'product',
 });
 

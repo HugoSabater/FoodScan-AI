@@ -4,6 +4,7 @@
  */
 
 const { User } = require('../models');
+const { aiService } = require('../services');
 
 /**
  * Login user (Simulated for MVP)
@@ -98,8 +99,68 @@ const getAllUsers = async (_req, res, next) => {
   }
 };
 
+/**
+ * Generate 1-day meal plan
+ * @route POST /api/users/meal-plan
+ * @body { userId, profile } - One of them is required
+ */
+const getMealPlan = async (req, res, next) => {
+  try {
+    const { userId, profile } = req.body;
+    let userProfile = profile;
+
+    // If no explicit profile provided, fetch from user ID
+    if (!userProfile) {
+      if (!userId) {
+        return res.status(400).json({
+          success: false,
+          message: 'userId or profile object is required',
+        });
+      }
+
+      const user = await User.findByPk(userId);
+
+      if (!user) {
+        return res.status(404).json({
+          success: false,
+          message: 'User not found',
+        });
+      }
+
+      userProfile = {
+        diet: user.dietary_preference,
+        allergies: user.allergies || [],
+      };
+    } else {
+      // Validate provided profile
+      if (typeof userProfile.diet !== 'string') {
+        return res.status(400).json({
+          success: false,
+          message: 'Invalid profile: diet must be a string',
+        });
+      }
+      if (!Array.isArray(userProfile.allergies)) {
+        return res.status(400).json({
+          success: false,
+          message: 'Invalid profile: allergies must be an array',
+        });
+      }
+    }
+
+    const mealPlan = await aiService.generateMealPlan(userProfile);
+
+    return res.status(200).json({
+      success: true,
+      data: mealPlan,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
 module.exports = {
   login,
   getUserById,
   getAllUsers,
+  getMealPlan,
 };

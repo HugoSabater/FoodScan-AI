@@ -22,12 +22,12 @@ const Scan = sequelize.define(
         key: 'id',
       },
     },
-    product_id: {
-      type: DataTypes.INTEGER,
+    product_code: {
+      type: DataTypes.STRING(50),
       allowNull: false,
       references: {
         model: 'products',
-        key: 'id',
+        key: 'code',
       },
     },
   },

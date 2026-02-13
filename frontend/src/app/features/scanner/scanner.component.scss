@@ -399,10 +399,55 @@
         }
     }
 
+    // ── Product Image ─────────────────────────
+
+    &__image {
+        width: 32px;
+        height: 32px;
+        object-fit: contain;
+        border-radius: $radius-sm;
+        background: $color-bg;
+        transition: transform $transition-base;
+
+        .c-quick-actions__chip:hover:not(:disabled) & {
+            transform: scale(1.1);
+        }
+    }
+
     // ── Chip Label ────────────────────────────
 
     &__label {
         font-size: $font-size-sm;
+    }
+
+    // ── Loading State ─────────────────────────
+
+    &__loading {
+        @include flex-center;
+        gap: $spacing-sm;
+        padding: $spacing-md;
+        color: $color-text-light;
+        font-size: $font-size-sm;
+
+        i {
+            color: $color-primary;
+            font-size: $font-size-lg;
+        }
+    }
+
+    // ── Empty State ───────────────────────────
+
+    &__empty {
+        @include flex-center;
+        gap: $spacing-xs;
+        padding: $spacing-md;
+        color: $color-text-light;
+        font-size: $font-size-sm;
+        text-align: center;
+
+        i {
+            color: $color-accent;
+        }
     }
 }
 
