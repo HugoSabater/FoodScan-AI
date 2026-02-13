@@ -1,0 +1,22 @@
+<svg width="32" height="32" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Leaf shape -->
+  <path d="M50 10 C30 10, 15 25, 15 45 C15 65, 30 80, 50 90 C70 80, 85 65, 85 45 C85 25, 70 10, 50 10 Z" 
+        fill="hsl(145, 63%, 42%)" 
+        opacity="0.9"/>
+  
+  <!-- Leaf vein (center) -->
+  <line x1="50" y1="15" x2="50" y2="85" 
+        stroke="hsl(145, 63%, 30%)" 
+        stroke-width="2" 
+        stroke-linecap="round"/>
+  
+  <!-- Leaf veins (left side) -->
+  <line x1="50" y1="30" x2="30" y2="40" stroke="hsl(145, 63%, 30%)" stroke-width="1.5" opacity="0.7"/>
+  <line x1="50" y1="45" x2="25" y2="55" stroke="hsl(145, 63%, 30%)" stroke-width="1.5" opacity="0.7"/>
+  <line x1="50" y1="60" x2="30" y2="70" stroke="hsl(145, 63%, 30%)" stroke-width="1.5" opacity="0.7"/>
+  
+  <!-- Leaf veins (right side) -->
+  <line x1="50" y1="30" x2="70" y2="40" stroke="hsl(145, 63%, 30%)" stroke-width="1.5" opacity="0.7"/>
+  <line x1="50" y1="45" x2="75" y2="55" stroke="hsl(145, 63%, 30%)" stroke-width="1.5" opacity="0.7"/>
+  <line x1="50" y1="60" x2="70" y2="70" stroke="hsl(145, 63%, 30%)" stroke-width="1.5" opacity="0.7"/>
+</svg>

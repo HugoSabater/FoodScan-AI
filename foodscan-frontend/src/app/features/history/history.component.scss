@@ -1,0 +1,210 @@
+// ============================================
+// History Component - Health-Tech UI
+// BEM: .c-history
+// ============================================
+
+@use '../../../styles/utilities/variables' as *;
+@use '../../../styles/utilities/mixins' as *;
+
+// ────────────────────────────────────────────
+// CONTAINER
+// ────────────────────────────────────────────
+
+.c-history {
+    padding: 2rem 1rem;
+    max-width: 1200px;
+    margin: 0 auto;
+
+    @media (min-width: $breakpoint-md) {
+        padding: 3rem 2rem;
+    }
+}
+
+// ────────────────────────────────────────────
+// HEADER
+// ────────────────────────────────────────────
+
+.c-history__header {
+    margin-bottom: 2rem;
+    text-align: center;
+
+    @media (min-width: $breakpoint-md) {
+        text-align: left;
+    }
+}
+
+.c-history__title {
+    font-size: 2rem;
+    font-weight: 700;
+    color: $color-text;
+    margin-bottom: 0.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.75rem;
+
+    @media (min-width: $breakpoint-md) {
+        justify-content: flex-start;
+        font-size: 2.5rem;
+    }
+
+    i {
+        color: $color-primary;
+        font-size: 1.75rem;
+
+        @media (min-width: $breakpoint-md) {
+            font-size: 2.25rem;
+        }
+    }
+}
+
+.c-history__subtitle {
+    font-size: 1rem;
+    color: $color-text-light;
+    margin: 0;
+}
+
+// ────────────────────────────────────────────
+// LOADING STATE
+// ────────────────────────────────────────────
+
+.c-history__loading {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 1.5rem;
+    min-height: 400px;
+    color: $color-text-light;
+
+    p {
+        font-size: 1.125rem;
+        margin: 0;
+    }
+}
+
+// Spinner animation
+.c-spinner {
+    width: 50px;
+    height: 50px;
+    border: 4px solid rgba($color-primary, 0.2);
+    border-top-color: $color-primary;
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+// ────────────────────────────────────────────
+// EMPTY STATE
+// ────────────────────────────────────────────
+
+.c-history__empty {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+    min-height: 400px;
+    text-align: center;
+    color: $color-text-light;
+
+    i {
+        font-size: 5rem;
+        opacity: 0.3;
+        color: $color-text-light;
+    }
+
+    h2 {
+        font-size: 1.5rem;
+        font-weight: 600;
+        color: $color-text;
+        margin: 0;
+    }
+
+    p {
+        font-size: 1rem;
+        margin: 0;
+        max-width: 400px;
+    }
+}
+
+// ────────────────────────────────────────────
+// BUTTON
+// ────────────────────────────────────────────
+
+.c-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.75rem 1.5rem;
+    font-size: 1rem;
+    font-weight: 600;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    text-decoration: none;
+    margin-top: 1rem;
+
+    &--primary {
+        background: linear-gradient(135deg, $color-primary 0%, darken($color-primary, 10%) 100%);
+        color: white;
+
+        &:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 16px rgba($color-primary, 0.3);
+        }
+
+        &:active {
+            transform: translateY(0);
+        }
+    }
+}
+
+// ────────────────────────────────────────────
+// HISTORY GRID
+// ────────────────────────────────────────────
+
+.c-history-grid {
+    display: grid;
+    gap: 1.5rem;
+    grid-template-columns: 1fr;
+
+    // Tablet: 2 columns
+    @media (min-width: $breakpoint-sm) {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    // Desktop: 3 columns
+    @media (min-width: $breakpoint-lg) {
+        grid-template-columns: repeat(3, 1fr);
+    }
+
+    // Smooth fade-in animation for cards
+    app-product-card {
+        animation: fadeInUp 0.4s ease backwards;
+
+        @for $i from 1 through 12 {
+            &:nth-child(#{$i}) {
+                animation-delay: #{$i * 0.05}s;
+            }
+        }
+    }
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}

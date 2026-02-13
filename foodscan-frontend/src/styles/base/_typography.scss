@@ -1,0 +1,88 @@
+// ============================================
+// FoodScan AI - Typography
+// Global typographic styles
+// ============================================
+
+@use '../utilities/variables' as *;
+
+// ── Google Fonts Import ─────────────────────
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
+// ── Base Typography ─────────────────────────
+body {
+    font-family: $font-family-base;
+    font-size: $font-size-base;
+    font-weight: $font-weight-regular;
+    line-height: $line-height-base;
+    color: $color-text;
+    background-color: $color-bg;
+}
+
+// ── Heading Hierarchy ───────────────────────
+h1 {
+    font-size: $font-size-3xl;
+    font-weight: $font-weight-bold;
+    line-height: $line-height-tight;
+}
+
+h2 {
+    font-size: $font-size-2xl;
+    font-weight: $font-weight-bold;
+    line-height: $line-height-tight;
+}
+
+h3 {
+    font-size: $font-size-xl;
+    font-weight: $font-weight-semibold;
+    line-height: $line-height-tight;
+}
+
+h4 {
+    font-size: $font-size-lg;
+    font-weight: $font-weight-semibold;
+    line-height: $line-height-base;
+}
+
+h5 {
+    font-size: $font-size-md;
+    font-weight: $font-weight-medium;
+    line-height: $line-height-base;
+}
+
+h6 {
+    font-size: $font-size-base;
+    font-weight: $font-weight-medium;
+    line-height: $line-height-base;
+}
+
+// ── Paragraph ───────────────────────────────
+p {
+    margin-bottom: $spacing-md;
+
+    &:last-child {
+        margin-bottom: 0;
+    }
+}
+
+// ── Small / Caption ─────────────────────────
+small,
+.text-sm {
+    font-size: $font-size-sm;
+}
+
+.text-xs {
+    font-size: $font-size-xs;
+}
+
+// ── Text Utilities ──────────────────────────
+.text-center {
+    text-align: center;
+}
+
+.text-light {
+    color: $color-text-light;
+}
+
+.text-bold {
+    font-weight: $font-weight-bold;
+}

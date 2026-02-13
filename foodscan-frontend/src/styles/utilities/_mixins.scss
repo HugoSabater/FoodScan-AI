@@ -1,0 +1,159 @@
+// ============================================
+// FoodScan AI - Mixins
+// Reusable SCSS patterns
+// ============================================
+
+@use 'variables' as *;
+
+// ── Responsive Breakpoints ──────────────────
+@mixin media-up($breakpoint) {
+    @if $breakpoint ==sm {
+        @media (min-width: $breakpoint-sm) {
+            @content;
+        }
+    }
+
+    @else if $breakpoint ==md {
+        @media (min-width: $breakpoint-md) {
+            @content;
+        }
+    }
+
+    @else if $breakpoint ==lg {
+        @media (min-width: $breakpoint-lg) {
+            @content;
+        }
+    }
+
+    @else if $breakpoint ==xl {
+        @media (min-width: $breakpoint-xl) {
+            @content;
+        }
+    }
+
+    @else if $breakpoint ==2xl {
+        @media (min-width: $breakpoint-2xl) {
+            @content;
+        }
+    }
+}
+
+@mixin media-down($breakpoint) {
+    @if $breakpoint ==sm {
+        @media (max-width: ($breakpoint-sm - 1)) {
+            @content;
+        }
+    }
+
+    @else if $breakpoint ==md {
+        @media (max-width: ($breakpoint-md - 1)) {
+            @content;
+        }
+    }
+
+    @else if $breakpoint ==lg {
+        @media (max-width: ($breakpoint-lg - 1)) {
+            @content;
+        }
+    }
+
+    @else if $breakpoint ==xl {
+        @media (max-width: ($breakpoint-xl - 1)) {
+            @content;
+        }
+    }
+}
+
+// ── Flexbox Utilities ───────────────────────
+@mixin flex-center {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+@mixin flex-between {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+@mixin flex-column {
+    display: flex;
+    flex-direction: column;
+}
+
+// ── Typography ──────────────────────────────
+@mixin heading($size: $font-size-xl) {
+    font-family: $font-family-heading;
+    font-size: $size;
+    font-weight: $font-weight-bold;
+    line-height: $line-height-tight;
+    color: $color-text;
+}
+
+@mixin body-text($size: $font-size-base) {
+    font-family: $font-family-base;
+    font-size: $size;
+    font-weight: $font-weight-regular;
+    line-height: $line-height-base;
+    color: $color-text;
+}
+
+// ── Cards ───────────────────────────────────
+@mixin card($padding: $spacing-lg) {
+    background: $color-bg-card;
+    border-radius: $radius-lg;
+    box-shadow: $shadow-md;
+    padding: $padding;
+}
+
+// ── Buttons ─────────────────────────────────
+@mixin button-base {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: $spacing-sm;
+    padding: $spacing-sm $spacing-lg;
+    border: none;
+    border-radius: $radius-md;
+    font-family: $font-family-base;
+    font-size: $font-size-base;
+    font-weight: $font-weight-semibold;
+    cursor: pointer;
+    transition: all $transition-base;
+    text-decoration: none;
+
+    &:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+    }
+}
+
+// ── Truncate Text ───────────────────────────
+@mixin truncate($lines: 1) {
+    @if $lines ==1 {
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+
+    @else {
+        display: -webkit-box;
+        -webkit-line-clamp: $lines;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+    }
+}
+
+// ── Visually Hidden (a11y) ──────────────────
+@mixin visually-hidden {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+}

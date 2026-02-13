@@ -1,0 +1,475 @@
+// ============================================
+// Scanner Component - Health-Tech Futuristic UI
+// BEM: .c-scanner
+// ============================================
+
+@use '../../../styles/utilities/variables' as *;
+@use '../../../styles/utilities/mixins' as *;
+
+// ── Keyframes ───────────────────────────────
+
+@keyframes laser-scan {
+    0% {
+        top: 0%;
+        opacity: 0.4;
+    }
+
+    50% {
+        opacity: 1;
+    }
+
+    100% {
+        top: 100%;
+        opacity: 0.4;
+    }
+}
+
+@keyframes pulse-glow {
+
+    0%,
+    100% {
+        box-shadow: 0 0 8px hsla(145, 90%, 50%, 0.3);
+    }
+
+    50% {
+        box-shadow: 0 0 20px hsla(145, 90%, 50%, 0.6);
+    }
+}
+
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+@keyframes fade-in-up {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes pulse {
+
+    0%,
+    100% {
+        opacity: 1;
+        transform: scale(1);
+    }
+
+    50% {
+        opacity: 0.7;
+        transform: scale(1.1);
+    }
+}
+
+// ── Block: .c-scanner ───────────────────────
+
+.c-scanner {
+    @include flex-column;
+    gap: $spacing-lg;
+    max-width: 600px;
+    margin-inline: auto;
+    padding: $spacing-md;
+
+    // ── Viewfinder ────────────────────────────
+
+    &__viewfinder {
+        position: relative;
+        width: 100%;
+        height: 500px;
+        max-height: 60vh;
+        border-radius: $radius-xl;
+        overflow: hidden;
+        background: $color-bg-dark;
+        box-shadow: $shadow-xl;
+        transition: filter $transition-base, opacity $transition-base;
+
+        &--blurred {
+            filter: blur(8px);
+            opacity: 0.3;
+        }
+    }
+
+    &__camera {
+        display: block;
+        width: 100%;
+        height: 100%;
+
+        // Target the video element inside ZXing
+        ::ng-deep video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover; // Fill without black bars
+        }
+    }
+
+    // ── Overlay ───────────────────────────────
+
+    &__overlay {
+        position: absolute;
+        inset: 0;
+        @include flex-column;
+        align-items: center;
+        justify-content: center;
+        gap: $spacing-lg;
+        pointer-events: none;
+        z-index: 2;
+    }
+
+    // ── Frame (visor) ─────────────────────────
+
+    &__frame {
+        position: relative;
+        width: 70%;
+        aspect-ratio: 1;
+        border: 2px solid hsla(145, 90%, 50%, 0.25);
+        border-radius: $radius-lg;
+        animation: pulse-glow 2.5s ease-in-out infinite;
+    }
+
+    // ── Corner Accents ────────────────────────
+
+    &__corner {
+        position: absolute;
+        width: 24px;
+        height: 24px;
+        border-color: $color-primary-light;
+        border-style: solid;
+        border-width: 0;
+
+        &--tl {
+            top: -2px;
+            left: -2px;
+            border-top-width: 4px;
+            border-left-width: 4px;
+            border-top-left-radius: $radius-lg;
+        }
+
+        &--tr {
+            top: -2px;
+            right: -2px;
+            border-top-width: 4px;
+            border-right-width: 4px;
+            border-top-right-radius: $radius-lg;
+        }
+
+        &--bl {
+            bottom: -2px;
+            left: -2px;
+            border-bottom-width: 4px;
+            border-left-width: 4px;
+            border-bottom-left-radius: $radius-lg;
+        }
+
+        &--br {
+            bottom: -2px;
+            right: -2px;
+            border-bottom-width: 4px;
+            border-right-width: 4px;
+            border-bottom-right-radius: $radius-lg;
+        }
+    }
+
+    // ── Laser Line ────────────────────────────
+
+    &__laser {
+        position: absolute;
+        left: 8px;
+        right: 8px;
+        height: 2px;
+        background: linear-gradient(90deg,
+                transparent 0%,
+                hsla(145, 90%, 50%, 0.8) 20%,
+                hsl(145, 90%, 50%) 50%,
+                hsla(145, 90%, 50%, 0.8) 80%,
+                transparent 100%);
+        box-shadow: 0 0 12px hsla(145, 90%, 50%, 0.6);
+        border-radius: 2px;
+        animation: laser-scan 2s ease-in-out infinite alternate;
+    }
+
+    // ── Status Text ───────────────────────────
+
+    &__status {
+        display: flex;
+        align-items: center;
+        gap: $spacing-sm;
+        padding: $spacing-xs $spacing-md;
+        background: hsla(0, 0%, 0%, 0.6);
+        backdrop-filter: blur(8px);
+        border-radius: $radius-full;
+        color: $color-text-inverse;
+        font-size: $font-size-sm;
+        font-weight: $font-weight-medium;
+
+        i {
+            color: $color-primary-light;
+        }
+    }
+
+    // ── Hint Text ─────────────────────────────
+
+    &__hint {
+        display: flex;
+        align-items: center;
+        gap: $spacing-xs;
+        padding: $spacing-xs $spacing-sm;
+        background: hsla(0, 0%, 0%, 0.5);
+        backdrop-filter: blur(6px);
+        border-radius: $radius-md;
+        color: $color-text-inverse;
+        font-size: $font-size-xs;
+        opacity: 0.8;
+        margin-top: $spacing-sm;
+
+        i {
+            color: $color-accent;
+            font-size: $font-size-sm;
+        }
+    }
+
+    // ── Camera Error ──────────────────────────
+
+    &__error {
+        position: absolute;
+        inset: 0;
+        @include flex-center;
+        flex-direction: column;
+        gap: $spacing-md;
+        background: $color-bg-dark;
+        color: $color-text-inverse;
+        z-index: 3;
+
+        i {
+            font-size: $font-size-3xl;
+            color: $color-danger;
+        }
+
+        p {
+            font-weight: $font-weight-semibold;
+        }
+
+        small {
+            color: $color-text-light;
+            text-align: center;
+            max-width: 280px;
+        }
+    }
+
+    // ── Loading ───────────────────────────────
+
+    &__loading {
+        @include flex-center;
+        flex-direction: column;
+        gap: $spacing-md;
+        padding: $spacing-xl;
+        color: $color-text-light;
+        font-weight: $font-weight-medium;
+    }
+
+    &__spinner {
+        width: 40px;
+        height: 40px;
+        border: 3px solid $color-border;
+        border-top-color: $color-primary;
+        border-radius: $radius-full;
+        animation: spin 0.8s linear infinite;
+    }
+
+    // ── Result Container ──────────────────────
+
+    &__result-container {
+        @include flex-column;
+        gap: $spacing-lg;
+        animation: fade-in-up 0.5s ease-out;
+    }
+
+    // ── Result (Error State) ──────────────────
+
+    &__result {
+        @include flex-column;
+        gap: $spacing-lg;
+        animation: fade-in-up 0.4s ease-out;
+
+        &--error {
+            @include card;
+            align-items: center;
+            text-align: center;
+            border-left: 4px solid $color-danger;
+
+            i {
+                font-size: $font-size-2xl;
+                color: $color-danger;
+            }
+        }
+    }
+}
+
+// ============================================
+// Quick Actions Component (Demo Panel)
+// BEM: .c-quick-actions
+// ============================================
+
+.c-quick-actions {
+    @include card;
+    border: 2px solid $color-border;
+    background: linear-gradient(135deg, hsla(145, 90%, 50%, 0.02) 0%, hsla(145, 90%, 50%, 0.05) 100%);
+
+    // ── Title ─────────────────────────────────
+
+    &__title {
+        display: flex;
+        align-items: center;
+        gap: $spacing-xs;
+        font-size: $font-size-base;
+        font-weight: $font-weight-semibold;
+        color: $color-text;
+        margin-bottom: $spacing-md;
+
+        i {
+            color: $color-primary;
+            font-size: $font-size-lg;
+        }
+    }
+
+    // ── Chips Container ───────────────────────
+
+    &__chips {
+        display: flex;
+        flex-wrap: wrap;
+        gap: $spacing-md;
+    }
+
+    // ── Individual Chip ───────────────────────
+
+    &__chip {
+        display: flex;
+        align-items: center;
+        gap: $spacing-sm;
+        padding: $spacing-sm $spacing-md;
+        background: $color-bg;
+        border: 2px solid $color-border;
+        border-radius: $radius-lg;
+        cursor: pointer;
+        transition: all $transition-base;
+        font-weight: $font-weight-medium;
+        color: $color-text;
+
+        // Hover effect
+        &:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            border-color: $color-primary-light;
+            background: linear-gradient(135deg, $color-bg 0%, hsla(145, 90%, 50%, 0.05) 100%);
+        }
+
+        // Active (loading) state
+        &--active {
+            border-color: $color-primary;
+            background: linear-gradient(135deg, hsla(145, 90%, 50%, 0.1) 0%, hsla(145, 90%, 50%, 0.15) 100%);
+            pointer-events: none;
+
+            .c-quick-actions__icon {
+                animation: pulse 1.5s ease-in-out infinite;
+            }
+        }
+
+        // Disabled state
+        &:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+    }
+
+    // ── Chip Icon ─────────────────────────────
+
+    &__icon {
+        font-size: $font-size-xl;
+        color: $color-primary;
+        transition: transform $transition-base;
+
+        .c-quick-actions__chip:hover:not(:disabled) & {
+            transform: scale(1.1);
+        }
+    }
+
+    // ── Chip Label ────────────────────────────
+
+    &__label {
+        font-size: $font-size-sm;
+    }
+}
+
+// ============================================
+// Manual Search Component
+// BEM: .c-manual-search
+// ============================================
+
+.c-manual-search {
+    @include card;
+    border: 2px solid $color-border;
+    background: linear-gradient(135deg, hsla(210, 75%, 50%, 0.02) 0%, hsla(210, 75%, 50%, 0.05) 100%);
+
+    // ── Input Group ───────────────────────────
+
+    &__input-group {
+        display: flex;
+        gap: $spacing-sm;
+        align-items: stretch;
+    }
+
+    // ── Input Field ───────────────────────────
+
+    &__input {
+        flex: 1;
+        min-width: 0; // Allow flex shrink
+    }
+
+    // ── Search Button ─────────────────────────
+
+    &__button {
+        display: flex;
+        align-items: center;
+        gap: $spacing-xs;
+        padding: $spacing-sm $spacing-md;
+        background: $color-primary;
+        color: $color-text-inverse;
+        border: none;
+        border-radius: $radius-md;
+        font-weight: $font-weight-semibold;
+        font-size: $font-size-sm;
+        cursor: pointer;
+        transition: all $transition-base;
+        white-space: nowrap;
+
+        i {
+            font-size: $font-size-base;
+        }
+
+        // Hover effect
+        &:hover:not(:disabled) {
+            background: $color-primary-dark;
+            transform: translateY(-1px);
+            box-shadow: $shadow-soft;
+        }
+
+        // Active effect
+        &:active:not(:disabled) {
+            transform: translateY(0);
+        }
+
+        // Disabled state
+        &:disabled {
+            background: $color-border;
+            color: $color-text-light;
+            cursor: not-allowed;
+            opacity: 0.6;
+        }
+    }
+}

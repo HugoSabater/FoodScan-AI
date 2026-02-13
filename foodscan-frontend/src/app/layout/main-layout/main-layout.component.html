@@ -1,0 +1,41 @@
+<div class="l-main-layout">
+
+    <!-- ═══════════════════════════════════════ -->
+    <!-- DESKTOP SIDEBAR                         -->
+    <!-- ═══════════════════════════════════════ -->
+    <aside class="c-sidebar">
+        <div class="c-sidebar__header">
+            <i class="fa-solid fa-leaf c-sidebar__logo-icon"></i>
+            <h1 class="c-sidebar__title">FoodScan AI</h1>
+        </div>
+
+        <nav class="c-sidebar__nav">
+            @for (item of menuItems; track item.path) {
+            <a class="c-sidebar__link" [routerLink]="item.path" routerLinkActive="c-sidebar__link--active">
+                <i class="fa-solid {{ item.icon }}"></i>
+                <span>{{ item.label }}</span>
+            </a>
+            }
+        </nav>
+    </aside>
+
+    <!-- ═══════════════════════════════════════ -->
+    <!-- MAIN CONTENT AREA                       -->
+    <!-- ═══════════════════════════════════════ -->
+    <main class="l-main-layout__content">
+        <router-outlet />
+    </main>
+
+    <!-- ═══════════════════════════════════════ -->
+    <!-- MOBILE BOTTOM NAVIGATION                -->
+    <!-- ═══════════════════════════════════════ -->
+    <nav class="c-bottom-nav">
+        @for (item of menuItems; track item.path) {
+        <a class="c-bottom-nav__link" [routerLink]="item.path" routerLinkActive="c-bottom-nav__link--active">
+            <i class="fa-solid {{ item.icon }}"></i>
+            <span>{{ item.label }}</span>
+        </a>
+        }
+    </nav>
+
+</div>

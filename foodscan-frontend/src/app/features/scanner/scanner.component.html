@@ -1,0 +1,139 @@
+<section class="c-scanner">
+
+    <!-- ═══════════════════════════════════════ -->
+    <!-- CAMERA VIEWFINDER                       -->
+    <!-- ═══════════════════════════════════════ -->
+    <div class="c-scanner__viewfinder" [class.c-scanner__viewfinder--blurred]="scanService.hasResult()">
+
+        <!-- ZXing Camera -->
+        <zxing-scanner class="c-scanner__camera" [formats]="allowedFormats" [enable]="scannerEnabled()"
+            (scanSuccess)="onScanSuccess($event)" (camerasFound)="onCamerasFound($event)"
+            (permissionResponse)="onPermissionResponse($event)"></zxing-scanner>
+
+        <!-- Scan Overlay (only show when scanning) -->
+        @if (!scanService.hasResult()) {
+        <div class="c-scanner__overlay">
+            <div class="c-scanner__frame">
+                <span class="c-scanner__corner c-scanner__corner--tl"></span>
+                <span class="c-scanner__corner c-scanner__corner--tr"></span>
+                <span class="c-scanner__corner c-scanner__corner--bl"></span>
+                <span class="c-scanner__corner c-scanner__corner--br"></span>
+
+                <!-- Laser Line -->
+                <div class="c-scanner__laser"></div>
+            </div>
+
+            <!-- Status Text -->
+            <p class="c-scanner__status">
+                <i class="fa-solid fa-barcode"></i>
+                {{ statusMessage() }}
+            </p>
+
+            <!-- Visual Feedback Hint -->
+            <p class="c-scanner__hint">
+                <i class="fa-solid fa-lightbulb"></i>
+                Apunta al código de barras o escríbelo abajo
+            </p>
+        </div>
+        }
+
+        <!-- Camera Denied -->
+        @if (cameraPermission() === 'denied') {
+        <div class="c-scanner__error">
+            <i class="fa-solid fa-video-slash"></i>
+            <p>Permiso de cámara denegado</p>
+            <small>Habilita el acceso a la cámara en la configuración de tu navegador</small>
+        </div>
+        }
+    </div>
+
+    <!-- ═══════════════════════════════════════ -->
+    <!-- MANUAL BARCODE INPUT                   -->
+    <!-- ═══════════════════════════════════════ -->
+    @if (!scanService.hasResult()) {
+    <div class="c-manual-search">
+        <div class="c-manual-search__input-group">
+            <input type="text" class="c-input c-manual-search__input" placeholder="O escribe el código de barras..."
+                [(ngModel)]="manualBarcode" (keyup.enter)="searchManualBarcode()" [disabled]="scanService.loading()" />
+            <button class="c-manual-search__button" (click)="searchManualBarcode()"
+                [disabled]="scanService.loading() || !manualBarcode().trim()">
+                <i class="fa-solid fa-magnifying-glass"></i>
+                Buscar
+            </button>
+        </div>
+    </div>
+    }
+
+    <!-- ═══════════════════════════════════════ -->
+    <!-- QUICK SCAN PANEL (DEMO)                -->
+    <!-- ═══════════════════════════════════════ -->
+    @if (!scanService.hasResult()) {
+    <div class="c-quick-actions">
+        <h4 class="c-quick-actions__title">
+            <i class="fa-solid fa-bolt"></i>
+            Escaneo Rápido (Demo)
+        </h4>
+
+        <div class="c-quick-actions__chips">
+            @for (demo of DEMO_BARCODES; track demo.code) {
+            <button class="c-quick-actions__chip" [class.c-quick-actions__chip--active]="scanService.loading()"
+                [disabled]="scanService.loading()" (click)="simulateScan(demo.code)">
+                <i class="c-quick-actions__icon fa-solid" [class.fa-jar]="demo.label === 'Nutella'"
+                    [class.fa-bottle-droplet]="demo.label === 'Coca-Cola Zero'">
+                </i>
+                <span class="c-quick-actions__label">{{ demo.label }}</span>
+            </button>
+            }
+        </div>
+    </div>
+    }
+
+    <!-- ═══════════════════════════════════════ -->
+    <!-- LOADING STATE                           -->
+    <!-- ═══════════════════════════════════════ -->
+    @if (scanService.loading()) {
+    <div class="c-scanner__loading">
+        <div class="c-scanner__spinner"></div>
+        <p>Analizando producto con IA...</p>
+    </div>
+    }
+
+    <!-- ═══════════════════════════════════════ -->
+    <!-- ERROR STATE                             -->
+    <!-- ═══════════════════════════════════════ -->
+    @if (scanService.error()) {
+    <div class="c-scanner__result c-scanner__result--error">
+        <i class="fa-solid fa-circle-exclamation"></i>
+        <p>{{ scanService.error() }}</p>
+        <button class="c-btn c-btn--secondary c-btn--sm" (click)="resetScanner()">
+            <i class="fa-solid fa-rotate-right"></i>
+            Reintentar
+        </button>
+    </div>
+    }
+
+    <!-- ═══════════════════════════════════════ -->
+    <!-- PRODUCT CARD RESULT                     -->
+    <!-- ═══════════════════════════════════════ -->
+    @if (scanService.hasResult() && scanService.currentProduct() && scanService.analysis()) {
+    <div class="c-scanner__result-container">
+        <app-product-card [data]="{
+                product: scanService.currentProduct()!,
+                analysis: scanService.analysis()!
+            }" (openDetail)="handleOpenDetail($event)" />
+
+        <button class="c-btn c-btn--primary c-btn--full c-btn--lg" (click)="resetScanner()">
+            <i class="fa-solid fa-camera"></i>
+            Escanear otro producto
+        </button>
+    </div>
+    }
+
+    <!-- ═══════════════════════════════════════ -->
+    <!-- PRODUCT DETAIL MODAL                    -->
+    <!-- ═══════════════════════════════════════ -->
+    @if (showModal() && modalData()) {
+    <app-product-detail-modal [data]="modalData()!" (close)="closeModal()" />
+    }
+
+</section>

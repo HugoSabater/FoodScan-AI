@@ -1,0 +1,54 @@
+// ============================================
+// FoodScan AI - Header Layout
+// Top navigation bar layout styles
+// ============================================
+
+@use '../utilities/variables' as *;
+@use '../utilities/mixins' as *;
+
+// ── Header ──────────────────────────────────
+.l-header {
+    position: sticky;
+    top: 0;
+    z-index: $z-sticky;
+    background: $color-bg-card;
+    border-bottom: 1px solid $color-border-light;
+    box-shadow: $shadow-sm;
+
+    &__inner {
+        @include flex-between;
+        max-width: $container-max-width;
+        margin-inline: auto;
+        padding: $spacing-sm $container-padding;
+        min-height: 60px;
+    }
+
+    &__logo {
+        @include flex-center;
+        gap: $spacing-sm;
+        font-size: $font-size-lg;
+        font-weight: $font-weight-bold;
+        color: $color-primary;
+    }
+
+    &__nav {
+        @include flex-center;
+        gap: $spacing-lg;
+
+        @include media-down(md) {
+            display: none;
+        }
+    }
+
+    &__link {
+        font-size: $font-size-sm;
+        font-weight: $font-weight-medium;
+        color: $color-text-light;
+        transition: color $transition-fast;
+
+        &:hover,
+        &--active {
+            color: $color-primary;
+        }
+    }
+}

@@ -1,0 +1,68 @@
+<section class="c-history">
+
+    <!-- ═══════════════════════════════════════ -->
+    <!-- HEADER                                  -->
+    <!-- ═══════════════════════════════════════ -->
+    <header class="c-history__header">
+        <h1 class="c-history__title">
+            <i class="fa-solid fa-clock-rotate-left"></i>
+            Tu Historial Saludable
+        </h1>
+        <p class="c-history__subtitle">
+            Productos que has escaneado recientemente
+        </p>
+    </header>
+
+    <!-- ═══════════════════════════════════════ -->
+    <!-- LOADING STATE                           -->
+    <!-- ═══════════════════════════════════════ -->
+    @if (isLoading()) {
+    <div class="c-history__loading">
+        <div class="c-spinner"></div>
+        <p>Cargando historial...</p>
+    </div>
+    } @else if (error()) {
+    <!-- ═══════════════════════════════════════ -->
+    <!-- ERROR STATE                             -->
+    <!-- ═══════════════════════════════════════ -->
+    <div class="c-history__empty">
+        <i class="fa-solid fa-triangle-exclamation"></i>
+        <h2>Error al cargar</h2>
+        <p>{{ error() }}</p>
+        <button class="c-btn c-btn--primary" (click)="retry()">
+            <i class="fa-solid fa-rotate-right"></i>
+            Reintentar
+        </button>
+    </div>
+    } @else if (isEmpty()) {
+    <!-- ═══════════════════════════════════════ -->
+    <!-- EMPTY STATE                             -->
+    <!-- ═══════════════════════════════════════ -->
+    <div class="c-history__empty">
+        <i class="fa-solid fa-inbox"></i>
+        <h2>Aún no has escaneado nada</h2>
+        <p>Empieza a escanear productos para ver tu historial aquí</p>
+        <a routerLink="/scanner" class="c-btn c-btn--primary">
+            <i class="fa-solid fa-barcode"></i>
+            Ir al Escáner
+        </a>
+    </div>
+    } @else {
+    <!-- ═══════════════════════════════════════ -->
+    <!-- HISTORY GRID                            -->
+    <!-- ═══════════════════════════════════════ -->
+    <div class="c-history-grid">
+        @for (item of historyItems(); track item.product.id) {
+        <app-product-card [data]="item" (openDetail)="handleOpenDetail($event)" />
+        }
+    </div>
+    }
+
+    <!-- ═══════════════════════════════════════ -->
+    <!-- PRODUCT DETAIL MODAL                    -->
+    <!-- ═══════════════════════════════════════ -->
+    @if (showModal() && modalData()) {
+    <app-product-detail-modal [data]="modalData()!" (close)="closeModal()" />
+    }
+
+</section>

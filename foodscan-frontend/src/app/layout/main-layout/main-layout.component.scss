@@ -1,0 +1,154 @@
+// ============================================
+// MainLayout - Responsive Navigation
+// BEM: .l-main-layout, .c-sidebar, .c-bottom-nav
+// ============================================
+
+@use '../../../styles/utilities/variables' as *;
+@use '../../../styles/utilities/mixins' as *;
+
+// ── Layout Container ────────────────────────
+
+.l-main-layout {
+    display: grid;
+    min-height: 100vh;
+    background: $color-bg;
+
+    // Desktop: sidebar + content
+    @include media-up(md) {
+        grid-template-columns: 260px 1fr;
+        grid-template-rows: 1fr;
+    }
+
+    // Mobile: content + bottom nav
+    grid-template-rows: 1fr auto;
+    grid-template-columns: 1fr;
+
+    &__content {
+        overflow-y: auto;
+        padding: $spacing-lg;
+        padding-bottom: calc($spacing-lg + 70px); // Space for bottom nav
+
+        @include media-up(md) {
+            padding-bottom: $spacing-lg;
+        }
+    }
+}
+
+// ── Desktop Sidebar ─────────────────────────
+
+.c-sidebar {
+    display: none;
+
+    @include media-up(md) {
+        display: flex;
+        flex-direction: column;
+        gap: $spacing-xl;
+        padding: $spacing-xl $spacing-lg;
+        background: $color-bg-card;
+        border-right: 1px solid $color-border-light;
+        box-shadow: $shadow-sm;
+    }
+
+    &__header {
+        @include flex-center;
+        gap: $spacing-sm;
+        padding-bottom: $spacing-lg;
+        border-bottom: 1px solid $color-border-light;
+    }
+
+    &__logo-icon {
+        font-size: $font-size-2xl;
+        color: $color-primary;
+    }
+
+    &__title {
+        font-size: $font-size-xl;
+        font-weight: $font-weight-bold;
+        color: $color-text;
+    }
+
+    &__nav {
+        @include flex-column;
+        gap: $spacing-xs;
+    }
+
+    &__link {
+        @include flex-center;
+        justify-content: flex-start;
+        gap: $spacing-md;
+        padding: $spacing-md $spacing-lg;
+        border-radius: $radius-md;
+        color: $color-text-light;
+        text-decoration: none;
+        font-weight: $font-weight-medium;
+        transition: all $transition-base;
+
+        i {
+            font-size: $font-size-lg;
+            width: 24px;
+            text-align: center;
+        }
+
+        &:hover {
+            background: hsla(145, 63%, 42%, 0.08);
+            color: $color-primary;
+        }
+
+        &--active {
+            background: linear-gradient(90deg,
+                    hsla(145, 63%, 42%, 0.15),
+                    hsla(145, 63%, 42%, 0.05));
+            color: $color-primary;
+            font-weight: $font-weight-semibold;
+            border-left: 3px solid $color-primary;
+        }
+    }
+}
+
+// ── Mobile Bottom Navigation ────────────────
+
+.c-bottom-nav {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    background: $color-bg-card;
+    border-top: 1px solid $color-border-light;
+    box-shadow: 0 -2px 8px hsla(0, 0%, 0%, 0.05);
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: $z-sticky;
+
+    @include media-up(md) {
+        display: none;
+    }
+
+    &__link {
+        @include flex-center;
+        flex-direction: column;
+        gap: $spacing-xs;
+        padding: $spacing-sm;
+        color: $color-text-light;
+        text-decoration: none;
+        font-size: $font-size-xs;
+        font-weight: $font-weight-medium;
+        transition: all $transition-base;
+
+        i {
+            font-size: $font-size-xl;
+        }
+
+        &:active {
+            transform: scale(0.95);
+        }
+
+        &--active {
+            color: $color-primary;
+            font-weight: $font-weight-semibold;
+
+            i {
+                transform: scale(1.1);
+            }
+        }
+    }
+}

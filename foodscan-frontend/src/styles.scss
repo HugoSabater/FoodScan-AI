@@ -1,0 +1,19 @@
+// ============================================
+// FoodScan AI - Main Stylesheet
+// Entry point: imports all partials in order
+// ============================================
+
+// 1. Utilities (no CSS output, just tokens & tools)
+// Imported via @use in each partial that needs them
+
+// 2. Base (reset + typography)
+@use 'styles/base/reset';
+@use 'styles/base/typography';
+
+// 3. Layout (structural patterns)
+@use 'styles/layout/grid';
+@use 'styles/layout/header';
+
+// 4. Components (reusable UI patterns)
+@use 'styles/components/globals';
+@use 'styles/components/inputs';

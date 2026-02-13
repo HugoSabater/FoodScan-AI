@@ -1,0 +1,197 @@
+// ============================================
+// FoodScan AI - Component Globals
+// Shared component design tokens & patterns
+// ============================================
+
+@use '../utilities/variables' as *;
+@use '../utilities/mixins' as *;
+
+// ── Buttons ─────────────────────────────────
+.c-btn {
+    @include button-base;
+
+    &--primary {
+        background: $color-primary;
+        color: $color-text-inverse;
+
+        &:hover:not(:disabled) {
+            background: $color-primary-dark;
+            transform: translateY(-1px);
+            box-shadow: $shadow-md;
+        }
+
+        &:active:not(:disabled) {
+            transform: translateY(0);
+        }
+    }
+
+    &--secondary {
+        background: transparent;
+        color: $color-primary;
+        border: 2px solid $color-primary;
+
+        &:hover:not(:disabled) {
+            background: $color-primary;
+            color: $color-text-inverse;
+        }
+    }
+
+    &--danger {
+        background: $color-danger;
+        color: $color-text-inverse;
+
+        &:hover:not(:disabled) {
+            opacity: 0.9;
+            transform: translateY(-1px);
+        }
+    }
+
+    &--lg {
+        padding: $spacing-md $spacing-xl;
+        font-size: $font-size-md;
+        border-radius: $radius-lg;
+    }
+
+    &--sm {
+        padding: $spacing-xs $spacing-md;
+        font-size: $font-size-sm;
+        border-radius: $radius-sm;
+    }
+
+    &--full {
+        width: 100%;
+    }
+}
+
+// ── Badge ───────────────────────────────────
+.c-badge {
+    display: inline-flex;
+    align-items: center;
+    padding: $spacing-xs $spacing-sm;
+    border-radius: $radius-full;
+    font-size: $font-size-xs;
+    font-weight: $font-weight-semibold;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+
+    &--success {
+        background: hsla(145, 63%, 42%, 0.12);
+        color: $color-success;
+    }
+
+    &--danger {
+        background: hsla(0, 72%, 52%, 0.12);
+        color: $color-danger;
+    }
+
+    &--warning {
+        background: hsla(35, 95%, 55%, 0.12);
+        color: $color-accent;
+    }
+
+    &--info {
+        background: hsla(210, 75%, 50%, 0.12);
+        color: $color-secondary;
+    }
+}
+
+// ── NutriScore Badge ────────────────────────
+.c-nutriscore {
+    @include flex-center;
+    width: 36px;
+    height: 36px;
+    border-radius: $radius-full;
+    font-size: $font-size-sm;
+    font-weight: $font-weight-bold;
+    text-transform: uppercase;
+    color: $color-text-inverse;
+
+    &--a {
+        background: hsl(145, 63%, 42%);
+    }
+
+    &--b {
+        background: hsl(90, 55%, 48%);
+    }
+
+    &--c {
+        background: hsl(48, 90%, 50%);
+        color: $color-text;
+    }
+
+    &--d {
+        background: hsl(25, 85%, 55%);
+    }
+
+    &--e {
+        background: hsl(0, 72%, 52%);
+    }
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    font-family: $font-family-base;
+    font-size: $font-size-base;
+    line-height: $line-height-base;
+    color: $color-text;
+    background: $color-bg;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+// ── Custom Scrollbar ────────────────────────
+
+// Webkit browsers (Chrome, Safari, Edge)
+::-webkit-scrollbar {
+    width: 12px;
+    height: 12px;
+}
+
+::-webkit-scrollbar-track {
+    background: $color-bg;
+    border-radius: $radius-md;
+}
+
+::-webkit-scrollbar-thumb {
+    background: linear-gradient(180deg, $color-primary-light 0%, $color-primary 100%);
+    border-radius: $radius-md;
+    border: 2px solid $color-bg;
+    transition: background $transition-base;
+
+    &:hover {
+        background: linear-gradient(180deg, $color-primary 0%, $color-primary-dark 100%);
+    }
+
+    &:active {
+        background: $color-primary-dark;
+    }
+}
+
+// Firefox
+* {
+    scrollbar-width: thin;
+    scrollbar-color: $color-primary $color-bg;
+}
+
+// ── Input ───────────────────────────────────
+.c-input {
+    width: 100%;
+    padding: $spacing-sm $spacing-md;
+    border: 2px solid $color-border;
+    border-radius: $radius-md;
+    font-size: $font-size-base;
+    color: $color-text;
+    background: $color-bg-card;
+    transition: border-color $transition-fast;
+
+    &:focus {
+        outline: none;
+        border-color: $color-primary;
+        box-shadow: 0 0 0 3px hsla(145, 63%, 42%, 0.15);
+    }
+
+    &::placeholder {
+        color: $color-text-light;
+    }
+}

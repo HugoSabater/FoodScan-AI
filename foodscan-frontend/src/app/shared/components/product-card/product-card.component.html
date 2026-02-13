@@ -1,0 +1,69 @@
+<article class="c-product-card" [ngClass]="borderClass()">
+
+  <!-- ═══════════════════════════════════════ -->
+  <!-- HEADER                                  -->
+  <!-- ═══════════════════════════════════════ -->
+  <header class="c-product-card__header">
+    @if (data().product.image_url) {
+    <img class="c-product-card__image" [src]="data().product.image_url" [alt]="data().product.name" />
+    }
+
+    <span class="c-nutriscore c-nutriscore--{{ data().product.nutri_score | lowercase }}">
+      {{ nutriScoreFormatted() }}
+    </span>
+  </header>
+
+  <!-- ═══════════════════════════════════════ -->
+  <!-- BODY                                    -->
+  <!-- ═══════════════════════════════════════ -->
+  <div class="c-product-card__body">
+    <h2 class="c-product-card__title">{{ data().product.name }}</h2>
+    <p class="c-product-card__brand">{{ data().product.brand }}</p>
+  </div>
+
+  <!-- ═══════════════════════════════════════ -->
+  <!-- AI FEEDBACK                             -->
+  <!-- ═══════════════════════════════════════ -->
+  <div class="c-product-card__ai-feedback">
+    <div class="c-product-card__ai-header">
+      <i class="fa-solid" [class.fa-circle-check]="data().analysis.is_suitable"
+        [class.fa-triangle-exclamation]="!data().analysis.is_suitable"></i>
+      <span>{{ data().analysis.is_suitable ? 'Apto para ti' : 'No recomendado' }}</span>
+    </div>
+
+    <p class="c-product-card__ai-reason">
+      {{ data().analysis.analysis_reason }}
+    </p>
+
+    <!-- Circular Score Indicator -->
+    <div class="c-product-card__score-container">
+      <div class="c-product-card__score-circle" [ngClass]="scoreColorClass()">
+        <svg viewBox="0 0 36 36" class="c-product-card__score-svg">
+          <path class="c-product-card__score-bg" d="M18 2.0845
+              a 15.9155 15.9155 0 0 1 0 31.831
+              a 15.9155 15.9155 0 0 1 0 -31.831" />
+          <path class="c-product-card__score-fill"
+            [attr.stroke-dasharray]="data().analysis.custom_health_score + ', 100'" d="M18 2.0845
+              a 15.9155 15.9155 0 0 1 0 31.831
+              a 15.9155 15.9155 0 0 1 0 -31.831" />
+        </svg>
+        <div class="c-product-card__score-text">
+          <strong>{{ data().analysis.custom_health_score }}</strong>
+          <small>/100</small>
+        </div>
+      </div>
+      <span class="c-product-card__score-label">Health Score</span>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════ -->
+  <!-- FOOTER                                  -->
+  <!-- ═══════════════════════════════════════ -->
+  <footer class="c-product-card__footer">
+    <button class="c-btn c-btn--secondary c-btn--full" (click)="onViewDetailsClick()">
+      <i class="fa-solid fa-circle-info"></i>
+      Ver detalles
+    </button>
+  </footer>
+
+</article>

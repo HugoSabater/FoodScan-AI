@@ -1,0 +1,92 @@
+// ============================================
+// FoodScan AI - Grid / Container
+// Layout primitives
+// ============================================
+
+@use '../utilities/variables' as *;
+@use '../utilities/mixins' as *;
+
+// ── Container ───────────────────────────────
+.l-container {
+    width: 100%;
+    max-width: $container-max-width;
+    margin-inline: auto;
+    padding-inline: $container-padding;
+}
+
+// ── Section spacing ─────────────────────────
+.l-section {
+    padding-block: $spacing-2xl;
+
+    @include media-up(md) {
+        padding-block: $spacing-3xl;
+    }
+}
+
+// ── Grid ────────────────────────────────────
+.l-grid {
+    display: grid;
+    gap: $spacing-lg;
+    grid-template-columns: 1fr;
+
+    @include media-up(md) {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    @include media-up(lg) {
+        grid-template-columns: repeat(3, 1fr);
+    }
+
+    &--2col {
+        @include media-up(md) {
+            grid-template-columns: repeat(2, 1fr);
+        }
+    }
+
+    &--4col {
+        @include media-up(lg) {
+            grid-template-columns: repeat(4, 1fr);
+        }
+    }
+}
+
+// ── Stack (vertical spacing) ────────────────
+.l-stack {
+    display: flex;
+    flex-direction: column;
+
+    &--sm {
+        gap: $spacing-sm;
+    }
+
+    &--md {
+        gap: $spacing-md;
+    }
+
+    &--lg {
+        gap: $spacing-lg;
+    }
+
+    &--xl {
+        gap: $spacing-xl;
+    }
+}
+
+// ── Cluster (horizontal spacing) ────────────
+.l-cluster {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+
+    &--sm {
+        gap: $spacing-sm;
+    }
+
+    &--md {
+        gap: $spacing-md;
+    }
+
+    &--lg {
+        gap: $spacing-lg;
+    }
+}

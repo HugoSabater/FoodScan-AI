@@ -1,0 +1,109 @@
+// ============================================
+// Premium Input Styles
+// Modern form inputs with focus states
+// ============================================
+
+@use '../utilities/variables' as *;
+
+// ── Base Input Styles ───────────────────────
+
+.c-input {
+    width: 100%;
+    padding: $spacing-sm $spacing-md;
+    font-size: $font-size-base;
+    font-family: $font-family-base;
+    color: $color-text;
+    background: $color-bg-card;
+    border: 2px solid $color-border;
+    border-radius: $radius-md;
+    transition: all $transition-base;
+    outline: none;
+
+    // Placeholder
+    &::placeholder {
+        color: $color-text-light;
+        opacity: 0.6;
+    }
+
+    // Focus state - Premium green glow
+    &:focus {
+        border-color: $color-primary;
+        box-shadow: $shadow-input-focus;
+        background: $color-bg-card;
+    }
+
+    // Hover state
+    &:hover:not(:focus):not(:disabled) {
+        border-color: darken($color-border, 5%);
+    }
+
+    // Disabled state
+    &:disabled {
+        background: $color-bg;
+        color: $color-text-light;
+        cursor: not-allowed;
+        opacity: 0.6;
+    }
+
+    // Error state
+    &--error {
+        border-color: $color-danger;
+
+        &:focus {
+            box-shadow: 0 0 0 3px hsla(0, 72%, 52%, 0.1);
+        }
+    }
+
+    // Success state
+    &--success {
+        border-color: $color-success;
+
+        &:focus {
+            box-shadow: $shadow-input-focus;
+        }
+    }
+}
+
+// ── Textarea ────────────────────────────────
+
+textarea.c-input {
+    min-height: 120px;
+    resize: vertical;
+    padding: $spacing-md;
+}
+
+// ── Select ──────────────────────────────────
+
+select.c-input {
+    cursor: pointer;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23666' d='M6 9L1 4h10z'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right $spacing-md center;
+    padding-right: calc($spacing-md * 2.5);
+}
+
+// ── Input Group ─────────────────────────────
+
+.c-input-group {
+    display: flex;
+    flex-direction: column;
+    gap: $spacing-xs;
+}
+
+.c-input-label {
+    font-size: $font-size-sm;
+    font-weight: $font-weight-medium;
+    color: $color-text;
+    margin-bottom: $spacing-xs;
+}
+
+.c-input-hint {
+    font-size: $font-size-xs;
+    color: $color-text-light;
+}
+
+.c-input-error {
+    font-size: $font-size-xs;
+    color: $color-danger;
+    font-weight: $font-weight-medium;
+}

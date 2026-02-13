@@ -1,0 +1,51 @@
+# Dependencies
+node_modules/
+foodscan-frontend/node_modules/
+
+# Environment Variables (CRITICAL - Never commit!)
+.env
+.env.local
+.env.*.local
+foodscan-frontend/.env
+foodscan-frontend/.env.local
+
+# Logs
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+*.sublime-*
+
+# OS
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Build Output
+dist/
+build/
+foodscan-frontend/dist/
+foodscan-frontend/.angular/
+
+# Coverage
+coverage/
+*.lcov
+
+# Database (local SQLite if used)
+*.sqlite
+*.db
+
+# Temporary
+tmp/
+temp/
+
+# Angular specific
+.angular/
+.sass-cache/

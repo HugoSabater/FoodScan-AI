@@ -1,0 +1,181 @@
+// ============================================
+// Profile Component - BEM Architecture
+// Block: .c-profile
+// ============================================
+
+@use '../../../styles/utilities/variables' as *;
+@use '../../../styles/utilities/mixins' as *;
+
+// ── Block: .c-profile ───────────────────────
+
+.c-profile {
+    max-width: 600px;
+    margin-inline: auto;
+
+    &__header {
+        @include flex-column;
+        gap: $spacing-xs;
+        margin-bottom: $spacing-xl;
+    }
+
+    &__title {
+        @include flex-center;
+        justify-content: flex-start;
+        gap: $spacing-sm;
+        font-size: $font-size-2xl;
+        font-weight: $font-weight-bold;
+        color: $color-text;
+
+        i {
+            color: $color-primary;
+        }
+    }
+
+    &__subtitle {
+        font-size: $font-size-base;
+        color: $color-text-light;
+    }
+
+    &__form {
+        @include card($spacing-xl);
+        @include flex-column;
+        gap: $spacing-lg;
+    }
+
+    &__actions {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: $spacing-md;
+        padding-top: $spacing-md;
+        border-top: 1px solid $color-border-light;
+
+        @include media-down(md) {
+            grid-template-columns: 1fr;
+        }
+    }
+}
+
+// ── Form Field ──────────────────────────────
+
+.c-form-field {
+    @include flex-column;
+    gap: $spacing-sm;
+
+    &__label {
+        display: flex;
+        align-items: center;
+        gap: $spacing-xs;
+        font-size: $font-size-sm;
+        font-weight: $font-weight-semibold;
+        color: $color-text;
+
+        i {
+            color: $color-primary;
+        }
+    }
+
+    &__input,
+    &__select {
+        width: 100%;
+        padding: $spacing-sm $spacing-md;
+        border: 1px solid $color-border;
+        border-radius: $radius-md;
+        font-size: $font-size-base;
+        font-family: $font-family-base;
+        color: $color-text;
+        background: $color-bg;
+        transition: all $transition-base;
+
+        &:focus {
+            outline: none;
+            border-color: $color-primary;
+            box-shadow: 0 0 0 3px hsla(145, 63%, 42%, 0.1);
+        }
+
+        &::placeholder {
+            color: $color-text-light;
+        }
+    }
+
+    &__select {
+        cursor: pointer;
+    }
+
+    &__error {
+        display: flex;
+        align-items: center;
+        gap: $spacing-xs;
+        font-size: $font-size-xs;
+        color: $color-danger;
+
+        i {
+            font-size: $font-size-sm;
+        }
+    }
+
+    &__checkbox-group {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+        gap: $spacing-sm;
+    }
+}
+
+// ── Checkbox ────────────────────────────────
+
+.c-checkbox {
+    display: flex;
+    align-items: center;
+    gap: $spacing-sm;
+    padding: $spacing-sm;
+    border: 1px solid $color-border;
+    border-radius: $radius-md;
+    cursor: pointer;
+    transition: all $transition-base;
+
+    &:hover {
+        background: hsla(145, 63%, 42%, 0.03);
+        border-color: $color-primary-light;
+    }
+
+    &__input {
+        width: 18px;
+        height: 18px;
+        cursor: pointer;
+        accent-color: $color-primary;
+    }
+
+    &__label {
+        font-size: $font-size-sm;
+        color: $color-text;
+        user-select: none;
+    }
+
+    &:has(&__input:checked) {
+        background: hsla(145, 63%, 42%, 0.08);
+        border-color: $color-primary;
+    }
+}
+
+// ── Alert ───────────────────────────────────
+
+.c-alert {
+    display: flex;
+    align-items: center;
+    gap: $spacing-sm;
+    padding: $spacing-md;
+    border-radius: $radius-md;
+    font-size: $font-size-sm;
+    font-weight: $font-weight-medium;
+
+    &--success {
+        background: hsla(145, 63%, 42%, 0.1);
+        color: $color-success;
+        border-left: 4px solid $color-success;
+    }
+
+    &--error {
+        background: hsla(0, 72%, 52%, 0.1);
+        color: $color-danger;
+        border-left: 4px solid $color-danger;
+    }
+}

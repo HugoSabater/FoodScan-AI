@@ -1,0 +1,202 @@
+// ============================================
+// ProductCard Component - BEM Architecture
+// Block: .c-product-card
+// ============================================
+
+@use '../../../../styles/utilities/variables' as *;
+@use '../../../../styles/utilities/mixins' as *;
+
+// ── Block: .c-product-card ─────────────────
+
+.c-product-card {
+  @include card($spacing-lg);
+  @include flex-column;
+  gap: $spacing-lg;
+  border-left: 4px solid transparent;
+  box-shadow: $shadow-card;
+  transition: all $transition-base;
+  animation: fade-in-up 0.5s ease-out;
+
+  // Premium hover effect
+  &:hover {
+    box-shadow: $shadow-card-hover;
+    transform: translateY(-2px);
+  }
+
+  // ── Modifiers ───────────────────────────
+
+  &--suitable {
+    border-left-color: $color-success;
+    background: linear-gradient(to bottom,
+        hsla(145, 63%, 42%, 0.03),
+        transparent);
+  }
+
+  &--warning {
+    border-left-color: $color-danger;
+    background: linear-gradient(to bottom,
+        hsla(0, 72%, 52%, 0.03),
+        transparent);
+  }
+
+  // ── Header ──────────────────────────────
+
+  &__header {
+    @include flex-between;
+    align-items: flex-start;
+    gap: $spacing-md;
+  }
+
+  &__image {
+    width: 100px;
+    height: 100px;
+    object-fit: contain;
+    border-radius: $radius-md;
+    background: $color-bg;
+    padding: $spacing-sm;
+    flex-shrink: 0;
+  }
+
+  // ── Body ────────────────────────────────
+
+  &__body {
+    @include flex-column;
+    gap: $spacing-xs;
+  }
+
+  &__title {
+    font-size: $font-size-xl;
+    font-weight: $font-weight-bold;
+    color: $color-text;
+    line-height: $line-height-tight;
+  }
+
+  &__brand {
+    font-size: $font-size-base;
+    color: $color-text-light;
+    font-weight: $font-weight-medium;
+  }
+
+  // ── AI Feedback ─────────────────────────
+
+  &__ai-feedback {
+    @include flex-column;
+    gap: $spacing-md;
+    padding: $spacing-md;
+    background: hsla(0, 0%, 0%, 0.02);
+    border-radius: $radius-md;
+  }
+
+  &__ai-header {
+    display: flex;
+    align-items: center;
+    gap: $spacing-sm;
+    font-size: $font-size-lg;
+    font-weight: $font-weight-bold;
+
+    .c-product-card--suitable & {
+      color: $color-success;
+    }
+
+    .c-product-card--warning & {
+      color: $color-danger;
+    }
+  }
+
+  &__ai-reason {
+    font-size: $font-size-base;
+    color: $color-text;
+    line-height: $line-height-loose;
+  }
+
+  // ── Circular Score ──────────────────────
+
+  &__score-container {
+    @include flex-center;
+    flex-direction: column;
+    gap: $spacing-sm;
+  }
+
+  &__score-circle {
+    position: relative;
+    width: 80px;
+    height: 80px;
+  }
+
+  &__score-svg {
+    width: 100%;
+    height: 100%;
+    transform: rotate(-90deg);
+  }
+
+  &__score-bg {
+    fill: none;
+    stroke: $color-border-light;
+    stroke-width: 3;
+  }
+
+  &__score-fill {
+    fill: none;
+    stroke-width: 3;
+    stroke-linecap: round;
+    transition: stroke-dasharray 0.8s ease-out;
+
+    .c-product-card__score--high & {
+      stroke: $color-success;
+    }
+
+    .c-product-card__score--mid & {
+      stroke: $color-accent;
+    }
+
+    .c-product-card__score--low & {
+      stroke: $color-danger;
+    }
+  }
+
+  &__score-text {
+    position: absolute;
+    inset: 0;
+    @include flex-center;
+    flex-direction: column;
+    font-weight: $font-weight-bold;
+
+    strong {
+      font-size: $font-size-xl;
+      line-height: 1;
+    }
+
+    small {
+      font-size: $font-size-xs;
+      color: $color-text-light;
+      font-weight: $font-weight-regular;
+    }
+  }
+
+  &__score-label {
+    font-size: $font-size-sm;
+    color: $color-text-light;
+    font-weight: $font-weight-medium;
+  }
+
+  // ── Footer ──────────────────────────────
+
+  &__footer {
+    padding-top: $spacing-sm;
+    border-top: 1px solid $color-border-light;
+  }
+}
+
+// ── Keyframe (if not already defined) ──────
+
+@keyframes fade-in-up {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

@@ -1,0 +1,54 @@
+{
+  "name": "foodscan-ai-backend",
+  "version": "1.0.0",
+  "description": "Backend API for FoodScan AI - TFG Project",
+  "main": "src/server.js",
+  "scripts": {
+    "start": "node src/server.js",
+    "dev": "nodemon src/server.js",
+    "lint": "eslint src/",
+    "lint:fix": "eslint src/ --fix",
+    "seed": "node src/scripts/seed.js"
+  },
+  "keywords": [
+    "foodscan",
+    "ai",
+    "nutrition",
+    "express",
+    "api"
+  ],
+  "author": "Hugo Sabater",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/HugoSabater/FoodScan-AI.git"
+  },
+  "homepage": "https://github.com/HugoSabater/FoodScan-AI#readme",
+  "bugs": {
+    "url": "https://github.com/HugoSabater/FoodScan-AI/issues"
+  },
+  "license": "MIT",
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "dependencies": {
+    "@faker-js/faker": "^10.3.0",
+    "axios": "^1.13.5",
+    "bcryptjs": "^3.0.3",
+    "cors": "^2.8.6",
+    "dotenv": "^17.2.4",
+    "express": "^5.2.1",
+    "groq-sdk": "^0.37.0",
+    "helmet": "^8.1.0",
+    "morgan": "^1.10.1",
+    "mysql2": "^3.16.3",
+    "sequelize": "^6.37.7"
+  },
+  "devDependencies": {
+    "@eslint/js": "^10.0.1",
+    "eslint": "^10.0.0",
+    "eslint-config-prettier": "^10.1.8",
+    "eslint-plugin-prettier": "^5.5.5",
+    "nodemon": "^3.1.11",
+    "prettier": "^3.8.1"
+  }
+}

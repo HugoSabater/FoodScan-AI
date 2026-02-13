@@ -1,0 +1,129 @@
+<div class="c-modal-backdrop" (click)="onBackdropClick($event)">
+    <div class="c-modal">
+
+        <!-- ═══════════════════════════════════════ -->
+        <!-- HEADER                                  -->
+        <!-- ═══════════════════════════════════════ -->
+        <header class="c-modal__header">
+            <h2 class="c-modal__title">Detalles del Producto</h2>
+            <button class="c-modal__close" (click)="onCloseClick()" aria-label="Cerrar modal">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+        </header>
+
+        <!-- ═══════════════════════════════════════ -->
+        <!-- PRODUCT IMAGE                           -->
+        <!-- ═══════════════════════════════════════ -->
+        <div class="c-modal__image-container">
+            @if (data().product.image_url) {
+            <img [src]="data().product.image_url" [alt]="data().product.name" class="c-modal__image" />
+            } @else {
+            <div class="c-modal__image-placeholder">
+                <i class="fa-solid fa-image"></i>
+            </div>
+            }
+        </div>
+
+        <!-- ═══════════════════════════════════════ -->
+        <!-- PRODUCT INFO                            -->
+        <!-- ═══════════════════════════════════════ -->
+        <div class="c-modal__content">
+
+            <div class="c-modal__section">
+                <h3 class="c-modal__section-title">Información General</h3>
+                <div class="c-modal__info-grid">
+                    <div class="c-modal__info-item">
+                        <span class="c-modal__label">Nombre:</span>
+                        <span class="c-modal__value">{{ data().product.name }}</span>
+                    </div>
+                    <div class="c-modal__info-item">
+                        <span class="c-modal__label">Marca:</span>
+                        <span class="c-modal__value">{{ data().product.brand }}</span>
+                    </div>
+                    <div class="c-modal__info-item">
+                        <span class="c-modal__label">Código de barras:</span>
+                        <span class="c-modal__value">{{ data().product.barcode }}</span>
+                    </div>
+                    <div class="c-modal__info-item">
+                        <span class="c-modal__label">Nutri-Score:</span>
+                        <span class="c-modal__value c-modal__value--nutriscore">
+                            {{ data().product.nutri_score?.toUpperCase() || 'N/A' }}
+                        </span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ═══════════════════════════════════════ -->
+            <!-- INGREDIENTS                             -->
+            <!-- ═══════════════════════════════════════ -->
+            @if (data().product.ingredients_text) {
+            <div class="c-modal__section">
+                <h3 class="c-modal__section-title">
+                    <i class="fa-solid fa-list"></i>
+                    Ingredientes
+                </h3>
+                <p class="c-modal__ingredients">
+                    {{ data().product.ingredients_text }}
+                </p>
+            </div>
+            }
+
+            <!-- ═══════════════════════════════════════ -->
+            <!-- AI ANALYSIS                             -->
+            <!-- ═══════════════════════════════════════ -->
+            <div class="c-modal__section">
+                <h3 class="c-modal__section-title">
+                    <i class="fa-solid fa-brain"></i>
+                    Análisis Inteligente
+                </h3>
+
+                <div class="c-modal__analysis" [class.c-modal__analysis--suitable]="data().analysis.is_suitable"
+                    [class.c-modal__analysis--unsuitable]="!data().analysis.is_suitable">
+
+                    <div class="c-modal__analysis-header">
+                        <i class="fa-solid" [class.fa-circle-check]="data().analysis.is_suitable"
+                            [class.fa-triangle-exclamation]="!data().analysis.is_suitable">
+                        </i>
+                        <span class="c-modal__analysis-status">
+                            {{ data().analysis.is_suitable ? 'Apto para tu perfil' : 'No apto para tu perfil' }}
+                        </span>
+                    </div>
+
+                    <p class="c-modal__analysis-reason">
+                        {{ data().analysis.analysis_reason }}
+                    </p>
+
+                    <div class="c-modal__analysis-footer">
+                        <div class="c-modal__score">
+                            <span class="c-modal__score-label">Health Score:</span>
+                            <span class="c-modal__score-value">
+                                {{ data().analysis.custom_health_score }}/100
+                            </span>
+                        </div>
+                        <div class="c-modal__meta">
+                            <span class="c-modal__meta-item">
+                                <i class="fa-solid fa-robot"></i>
+                                {{ data().analysis.ai_model }}
+                            </span>
+                            <span class="c-modal__meta-item">
+                                <i class="fa-solid fa-clock"></i>
+                                {{ data().analysis.analyzed_at | date:'short' }}
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- ═══════════════════════════════════════ -->
+        <!-- FOOTER                                  -->
+        <!-- ═══════════════════════════════════════ -->
+        <footer class="c-modal__footer">
+            <button class="c-btn c-btn--secondary" (click)="onCloseClick()">
+                Cerrar
+            </button>
+        </footer>
+
+    </div>
+</div>
