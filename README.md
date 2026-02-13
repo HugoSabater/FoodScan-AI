@@ -1,130 +1,154 @@
-# 🥗 FoodScan AI - Intelligent Nutritional Assistant
+# 🥗 FoodScan AI - Asistente Nutricional Inteligente
 
 ![Angular](https://img.shields.io/badge/Angular-17+-DD0031?logo=angular)
 ![Node.js](https://img.shields.io/badge/Node.js-20+-339933?logo=nodedotjs)
 ![MySQL](https://img.shields.io/badge/MySQL-8.0-00758F?logo=mysql)
 ![AI Powered](https://img.shields.io/badge/AI-Groq%20%2F%20Llama3-blueviolet)
+![License](https://img.shields.io/badge/license-MIT-green)
 
-**Autor:** Hugo Sabater  
-**Repositorio:** https://github.com/HugoSabater/FoodScan-AI  
-**Licencia:** MIT
+> **FoodScan AI** transforma tu móvil en un nutricionista de bolsillo. Escanea códigos de barras y recibe un análisis instantáneo basado en tu perfil único (Alergias, Dietas: Vegano, Keto, etc.) potenciado por Inteligencia Artificial.
 
-> **FoodScan AI** no es solo un escáner de códigos de barras. Es un asistente nutricional inteligente que analiza los ingredientes de cualquier producto y determina en tiempo real si es apto para TI, basándose en tu perfil único (Alergias, Dietas: Vegano, Keto, etc.).
+---
 
-## 🚀 Características Principales
+## 🚀 Demo en Vivo
 
-* **🔍 Escaneo Inteligente:** Detección de productos mediante códigos de barras (EAN-13).
-* **🧠 Análisis con IA Generativa:** Uso de LLMs (Llama 3 vía Groq) para interpretar listas de ingredientes complejas.
-* **👤 Perfil Dinámico:** Configura tus restricciones (ej. "Alergia a Nueces", "Dieta Keto"). La IA adapta el veredicto instantáneamente.
-* **📚 Historial Persistente:** Registro de todos tus escaneos con su estado de salud original.
-* **🎨 UI/UX Premium:** Interfaz moderna con metodología BEM, Glassmorphism y animaciones fluidas.
+👉 **[Ver Proyecto Desplegado](https://foodscan-ai.vercel.app)** *(Actualizar tras desplegar)*
 
-## 🛠️ Stack Tecnológico
+---
 
-### Backend (API REST)
-* **Runtime:** Node.js + Express.js
-* **Database:** MySQL con Sequelize ORM
-* **AI Integration:** Groq SDK (Llama 3-70b) + OpenFoodFacts API
-* **Security & Quality:** Helmet, Morgan, ESLint, Prettier.
+## 📸 Capturas de Pantalla
 
-### Frontend (SPA)
-* **Framework:** Angular 17+ (Standalone Components)
-* **Styling:** SCSS con Arquitectura BEM (Bloque-Elemento-Modificador).
-* **State Management:** Angular Signals + LocalStorage.
-* **Components:** Modal reutilizable, Chips interactivos, Grid Responsive.
+| Escáner Inteligente | Análisis IA | Perfil de Salud |
+|:---:|:---:|:---:|
+| ![Scanner](./docs/assets/scanner.png) | ![Analysis](./docs/assets/analysis.png) | ![Profile](./docs/assets/profile.png) |
+
+---
+
+## 🛠️ Arquitectura y Stack
+
+Este proyecto sigue una arquitectura **Clean Code** con separación estricta de responsabilidades:
+
+### 🎨 Frontend (Desplegado en Vercel)
+* **Framework:** Angular 17+ (Standalone Components, Signals).
+* **Estilos:** SCSS Modular con metodología **BEM**.
+* **Diseño:** Glassmorphism, animaciones CSS nativas y diseño 100% Responsive.
+* **Características:** Escaneo visual (ZXing), Modo manual, PWA Ready.
+
+### ⚙️ Backend (API REST)
+* **Runtime:** Node.js + Express.
+* **Base de Datos:** MySQL (Gestionada con Sequelize ORM).
+* **IA:** Integración con **Llama-3-70b** vía Groq SDK para análisis semántico de ingredientes.
+* **Calidad:** ESLint, Prettier, Morgan (Logs), Helmet (Seguridad).
+
+---
 
 ## 📂 Estructura del Proyecto
 
-```bash
+```
 FoodScan-AI/
-├── src/                    # 🔧 Backend (Node.js + Express + MySQL)
-│   ├── controllers/        # Lógica de negocio (users, products, scans)
-│   ├── services/           # IA (Groq) + OpenFoodFacts integration
-│   ├── models/             # Sequelize ORM models
-│   ├── routes/             # Express routes
-│   ├── middlewares/        # Error handling, validation
-│   ├── scripts/            # Seeds y utilidades
-│   └── config/             # Database & environment config
+├── backend/                # 🔧 API REST (Node.js + Express)
+│   ├── src/
+│   │   ├── controllers/    # Lógica de negocio
+│   │   ├── services/       # IA (Groq) + OpenFoodFacts
+│   │   ├── models/         # Sequelize ORM
+│   │   └── routes/         # Express routes
+│   ├── package.json
+│   └── .env.example
 │
-├── foodscan-frontend/      # 🎨 Frontend (Angular 17)
-│   ├── src/app/features/   # Scanner, History, Profile
-│   ├── src/app/shared/     # Componentes reutilizables (ProductCard, Modal)
-│   ├── src/styles/         # SCSS con BEM (utilities, components, layout)
-│   └── src/assets/         # Imágenes, iconos
+├── frontend/               # 🎨 SPA (Angular 17)
+│   ├── src/
+│   │   ├── app/features/   # Scanner, History, Profile
+│   │   ├── app/shared/     # Componentes reutilizables
+│   │   └── styles/         # SCSS con BEM
+│   ├── package.json
+│   └── vercel.json
 │
-├── package.json            # Backend dependencies
-├── .env.example            # Environment variables template
-├── .gitignore              # Git ignore rules
-├── README.md               # Este archivo
-└── IA_WORKLOG.md           # Diario de desarrollo con IA
+├── docs/                   # 📚 Documentación
+│   ├── IA_WORKLOG.md       # Diario de desarrollo con IA
+│   └── assets/             # Screenshots
+│
+├── LICENSE                 # MIT License
+├── SECURITY.md             # Política de seguridad
+└── README.md               # Este archivo
 ```
 
-## 📦 Instalación y Despliegue
+---
+
+## 🚀 Instalación Local
 
 ### Prerrequisitos
 * Node.js v18+
 * MySQL Server corriendo en puerto 3306
 
-### 1. Configurar Backend
-
+### 1. Clonar el repositorio
 ```bash
-# Instalar dependencias
-npm install
-
-# Configurar variables de entorno
-cp .env.example .env
-# Edita .env con tus credenciales (DB, Groq API Key)
-
-# Poblar base de datos con datos de prueba
-npm run seed
-
-# Iniciar servidor de desarrollo
-npm run dev   # Corre en puerto 3000
+git clone https://github.com/HugoSabater/FoodScan-AI.git
+cd FoodScan-AI
 ```
 
-### 2. Configurar Frontend
-
+### 2. Configurar Backend
 ```bash
-cd foodscan-frontend
+cd backend
+cp .env.example .env  # Configura tus credenciales MySQL y Groq API
 npm install
-npm start   # Corre en puerto 4200
+npm run seed          # 🌱 Carga datos de prueba
+npm run dev           # 🚀 Inicia servidor en puerto 3000
 ```
+
+### 3. Configurar Frontend
+```bash
+cd frontend
+npm install
+npm start             # 🌐 Inicia aplicación en http://localhost:4200
+```
+
+---
+
+## 🤖 Diario de Desarrollo con IA
+
+El desarrollo de este proyecto ha sido asistido por IA actuando como "Senior Architect".
+Puedes consultar el registro completo de prompts, decisiones de arquitectura y resolución de problemas en:
+
+📄 **[Ver Diario de IA](./docs/IA_WORKLOG.md)**
+
+---
+
+## 🎯 Características Destacadas
+
+* ✅ **Escaneo en Tiempo Real:** Detección automática de códigos de barras con ZXing
+* ✅ **Análisis IA:** Llama-3-70b analiza ingredientes contra tu perfil
+* ✅ **Búsqueda Manual:** Input alternativo para códigos sin cámara
+* ✅ **Historial Persistente:** Todos tus escaneos guardados en MySQL
+* ✅ **Responsive Design:** Optimizado para móvil y desktop
+* ✅ **Arquitectura BEM:** CSS modular y mantenible
+
+---
 
 ## 🧪 Pruebas de Concepto (Demo)
 
 ### Caso Vegano:
 * Ve a Perfil, selecciona "Vegano".
-* Escanea "Nutella".
-* Resultado: 🔴 No Apto (Contiene Leche).
+* Escanea "Nutella" (código: `3017620422003`).
+* Resultado: 🔴 **No Apto** (Contiene Leche).
 
 ### Caso Omnívoro:
 * Ve a Perfil, selecciona "Omnívoro".
 * Escanea "Nutella".
-* Resultado: 🟢/🟡 Apto (Score nutricional bajo, pero compatible).
+* Resultado: 🟡 **Apto con Reservas** (Score nutricional bajo, pero compatible).
 
-## 🚀 Despliegue en Producción
+---
 
-### Frontend (Vercel)
-```bash
-cd foodscan-frontend
-vercel --prod
-```
+## 👤 Autor
 
-### Backend (Railway/Render)
-1. Conectar repositorio GitHub
-2. Configurar variables de entorno en Dashboard
-3. Auto-deploy en push a `main`
+**Hugo Sabater**
+* [GitHub Profile](https://github.com/HugoSabater)
+* Proyecto realizado como TFG para Desarrollo de Aplicaciones Web (DAW).
 
-## 🤖 Diario de IA
+---
 
-Ver [`IA_WORKLOG.md`](./IA_WORKLOG.md) para detalles sobre:
-- Prompts utilizados en el desarrollo
-- Evolución del sistema de análisis con IA
-- Desafíos resueltos con asistencia de IA
+## 📄 Licencia
 
-## 📝 Licencia
-
-MIT © 2026 Hugo Sabater
+Este proyecto está bajo la licencia [MIT](LICENSE).
 
 ---
 
