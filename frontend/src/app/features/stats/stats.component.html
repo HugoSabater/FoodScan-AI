@@ -1,0 +1,63 @@
+<div class="p-section">
+    <div class="c-container">
+        <header class="u-text-center u-mb-xl">
+            <h1 class="u-text-h2 u-color-primary u-mb-sm">
+                <i class="fa-solid fa-chart-pie u-mr-xs"></i> Estadísticas
+            </h1>
+            <p class="u-text-body u-color-text-light">
+                Analiza tu historial de escaneos y la calidad nutricional de tu dieta.
+            </p>
+        </header>
+
+        @if (loading()) {
+        <div class="u-text-center u-p-xl">
+            <i class="fa-solid fa-circle-notch fa-spin fa-3x u-color-primary"></i>
+            <p class="u-mt-md">Cargando estadísticas...</p>
+        </div>
+        } @else if (error()) {
+        <div class="c-alert c-alert--danger">
+            <i class="fa-solid fa-triangle-exclamation"></i>
+            <span>{{ error() }}</span>
+            <button class="c-btn c-btn--outline u-ml-auto" (click)="loadStats()">Reintentar</button>
+        </div>
+        } @else {
+        <!-- Summary Cards -->
+        <div class="l-grid l-grid--3-cols u-mb-xl">
+            <div class="c-card u-text-center">
+                <div class="u-text-h4 u-color-text-light u-mb-xs">Total Escaneos</div>
+                <div class="u-text-h1 u-color-primary">{{ stats()?.totalScans || 0 }}</div>
+            </div>
+            <div class="c-card u-text-center">
+                <div class="u-text-h4 u-color-text-light u-mb-xs">Productos Aptos</div>
+                <div class="u-text-h1 u-color-success">{{ stats()?.suitability?.suitable || 0 }}</div>
+            </div>
+            <div class="c-card u-text-center">
+                <div class="u-text-h4 u-color-text-light u-mb-xs">Productos No Aptos</div>
+                <div class="u-text-h1 u-color-danger">{{ stats()?.suitability?.unsuitable || 0 }}</div>
+            </div>
+        </div>
+
+        <!-- Charts Grid -->
+        <div class="l-grid l-grid--2-cols">
+            <!-- Doughnut Chart -->
+            <article class="c-card">
+                <h3 class="u-text-h3 u-mb-md u-text-center">Resumen de tu Dieta</h3>
+                <div class="chart-container">
+                    <canvas baseChart [data]="doughnutChartData" [type]="doughnutChartType"
+                        [options]="doughnutChartOptions">
+                    </canvas>
+                </div>
+            </article>
+
+            <!-- Bar Chart -->
+            <article class="c-card">
+                <h3 class="u-text-h3 u-mb-md u-text-center">Distribución NutriScore</h3>
+                <div class="chart-container">
+                    <canvas baseChart [data]="barChartData" [type]="barChartType" [options]="barChartOptions">
+                    </canvas>
+                </div>
+            </article>
+        </div>
+        }
+    </div>
+</div>

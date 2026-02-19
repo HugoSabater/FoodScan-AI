@@ -28,8 +28,8 @@ RUN npm install
 # Copy source code
 COPY . .
 
-# Run linting (optional, comment out if causing issues)
-# RUN npm run lint
+# Run linting to enforce code quality
+RUN npm run lint
 
 # ── Stage 3: Production ─────────────────────
 FROM node:18-alpine AS production

@@ -23,8 +23,6 @@ app.use(
     origin: env.cors.origin,
     credentials: env.cors.credentials,
   })
-    credentials: env.cors.credentials,
-  })
 );
 
 // Rate Limiting

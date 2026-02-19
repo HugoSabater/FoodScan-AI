@@ -57,6 +57,13 @@ router.get('/users/:id', userController.getUserById);
 router.get('/users/:userId/history', scanController.getUserHistory);
 
 /**
+ * @route   GET /api/users/:userId/stats
+ * @desc    Get user statistics
+ * @access  Public
+ */
+router.get('/users/:userId/stats', userController.getUserStats);
+
+/**
  * @route   POST /api/users/meal-plan
  * @desc    Generate 1-day meal plan
  * @access  Public

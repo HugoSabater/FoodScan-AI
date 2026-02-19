@@ -1,0 +1,60 @@
+@use '../../../styles/utilities/variables' as *;
+@use '../../../styles/utilities/mixins' as *;
+
+.p-section {
+    padding: $spacing-xl 0;
+    min-height: 80vh;
+}
+
+.c-container {
+    width: 100%;
+    max-width: $container-max-width;
+    margin-inline: auto;
+    padding-inline: $container-padding;
+}
+
+.c-card {
+    @include card;
+    padding: $spacing-lg;
+    background-color: $color-bg-card;
+    transition: transform $transition-base, box-shadow $transition-base;
+
+    &:hover {
+        transform: translateY(-5px);
+        box-shadow: $shadow-card-hover;
+    }
+}
+
+.c-alert {
+    display: flex;
+    align-items: center;
+    padding: $spacing-md;
+    border-radius: $radius-md;
+    margin-bottom: $spacing-lg;
+    gap: $spacing-sm;
+    font-weight: 500;
+
+    &--danger {
+        background-color: rgba($color-danger, 0.1);
+        color: $color-danger;
+        border: 1px solid rgba($color-danger, 0.2);
+    }
+}
+
+.chart-container {
+    position: relative;
+    height: 300px;
+    width: 100%;
+    @include flex-center;
+}
+
+// Responsive adjustments
+@media (max-width: $breakpoint-md) {
+    .l-grid--3-cols {
+        grid-template-columns: 1fr;
+    }
+
+    .l-grid--2-cols {
+        grid-template-columns: 1fr;
+    }
+}

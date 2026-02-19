@@ -21,7 +21,7 @@ const TRENDING_BARCODES = [
  */
 async function getTrendingProducts() {
   try {
-    const productPromises = TRENDING_BARCODES.map(async (barcode) => {
+    const productPromises = TRENDING_BARCODES.map(async barcode => {
       try {
         const response = await axios.get(
           `https://world.openfoodfacts.org/api/v2/product/${barcode}.json`,
@@ -52,10 +52,10 @@ async function getTrendingProducts() {
     const products = await Promise.all(productPromises);
 
     // Filtrar productos nulos (fallidos) y devolver solo los exitosos
-    return products.filter((p) => p !== null);
+    return products.filter(p => p !== null);
   } catch (error) {
     console.error('Error fetching trending products:', error);
-    throw new Error('Failed to fetch trending products');
+    throw new Error('Failed to fetch trending products', { cause: error });
   }
 }
 

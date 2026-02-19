@@ -1,5 +1,7 @@
 import { Injectable, signal, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 
 export interface UserProfile {
     name: string;
@@ -76,13 +78,15 @@ export class UserService {
     /**
      * Generate AI Meal Plan
      */
+    /**
+     * Generate AI Meal Plan
+     */
     generateMealPlan(): void {
+        const profile = this.profile();
         if (this.loadingMealPlan()) return;
 
         this.loadingMealPlan.set(true);
         this.mealPlanError.set(null);
-
-        const profile = this.profile();
 
         this.http.post<{ success: boolean, data: MealPlanItem[] }>('/api/users/meal-plan', { profile })
             .subscribe({
@@ -97,4 +101,29 @@ export class UserService {
                 }
             });
     }
+
+    /**
+     * Get User Statistics
+     */
+    getStats(userId: string | number): Observable<UserStats> {
+        return this.http.get<{ success: boolean, data: UserStats }>(`/api/users/${userId}/stats`)
+            .pipe(map(res => res.data));
+    }
+}
+
+export interface UserStats {
+    totalScans: number;
+    nutriScoreDistribution: {
+        a: number;
+        b: number;
+        c: number;
+        d: number;
+        e: number;
+        unknown: number;
+    };
+    suitability: {
+        suitable: number;
+        unsuitable: number;
+        unknown: number;
+    };
 }

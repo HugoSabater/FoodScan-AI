@@ -22,6 +22,10 @@ export const routes: Routes = [
             {
                 path: 'meal-plan',
                 loadComponent: () => import('./features/meal-plan/meal-plan.component').then(m => m.MealPlanComponent)
+            },
+            {
+                path: 'stats',
+                loadComponent: () => import('./features/stats/stats.component').then(m => m.StatsComponent)
             }
         ]
     },

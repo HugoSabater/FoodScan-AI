@@ -112,7 +112,7 @@ Analiza si este producto es adecuado para este usuario. Responde SOLO con JSON.`
  * @param {Object} profile - User allergies and dietary preferences
  * @returns {Promise<Array>} Meal plan
  */
-const generateMealPlan = async (profile) => {
+const generateMealPlan = async profile => {
   // eslint-disable-next-line no-console
   console.log('🤖 Generando plan de comidas para dieta:', profile.diet);
 

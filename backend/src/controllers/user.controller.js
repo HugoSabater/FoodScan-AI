@@ -158,9 +158,84 @@ const getMealPlan = async (req, res, next) => {
   }
 };
 
+/**
+ * Get user statistics
+ * @route GET /api/users/:userId/stats
+ */
+const getUserStats = async (req, res, next) => {
+  try {
+    const { userId } = req.params;
+    const { Scan, Product } = require('../models');
+
+    // Verify user exists
+    const user = await User.findByPk(userId);
+    if (!user) {
+      return res.status(404).json({
+        success: false,
+        message: 'User not found',
+      });
+    }
+
+    // Fetch all scans with product data
+    const scans = await Scan.findAll({
+      where: { user_id: userId },
+      include: [
+        {
+          model: Product,
+          as: 'product',
+          attributes: ['nutri_score'],
+        },
+      ],
+    });
+
+    // Calculate Statistics
+    const totalScans = scans.length;
+    const nutriScoreDistribution = { a: 0, b: 0, c: 0, d: 0, e: 0, unknown: 0 };
+    let suitableCount = 0;
+    let unsuitableCount = 0;
+
+    scans.forEach(scan => {
+      const score = scan.product?.nutri_score?.toLowerCase();
+
+      if (score && ['a', 'b', 'c', 'd', 'e'].includes(score)) {
+        nutriScoreDistribution[score]++;
+
+        // Suitability Logic (Simulated based on NutriScore)
+        // A & B = Suitable
+        // C, D, E = Unsuitable
+        if (['a', 'b'].includes(score)) {
+          suitableCount++;
+        } else {
+          unsuitableCount++;
+        }
+      } else {
+        nutriScoreDistribution.unknown++;
+      }
+    });
+
+    const suitability = {
+      suitable: suitableCount,
+      unsuitable: unsuitableCount,
+      unknown: nutriScoreDistribution.unknown,
+    };
+
+    return res.status(200).json({
+      success: true,
+      data: {
+        totalScans,
+        nutriScoreDistribution,
+        suitability,
+      },
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
 module.exports = {
   login,
   getUserById,
   getAllUsers,
   getMealPlan,
+  getUserStats,
 };
