@@ -4,13 +4,27 @@
     <!-- HEADER                                  -->
     <!-- ═══════════════════════════════════════ -->
     <header class="c-history__header">
-        <h1 class="c-history__title">
-            <i class="fa-solid fa-clock-rotate-left"></i>
-            Tu Historial Saludable
-        </h1>
-        <p class="c-history__subtitle">
-            Productos que has escaneado recientemente
-        </p>
+        <div class="c-history__header-text">
+            <h1 class="c-history__title">
+                <i class="fa-solid fa-clock-rotate-left"></i>
+                Tu Historial Saludable
+            </h1>
+            <p class="c-history__subtitle">
+                Productos que has escaneado recientemente
+            </p>
+        </div>
+        @if (!isEmpty() && !isLoading()) {
+        <button class="c-btn c-btn--outline" (click)="downloadPdf()"
+            [disabled]="isGeneratingPdf() || historyItems().length === 0" title="Descargar informe PDF del historial">
+            @if (isGeneratingPdf()) {
+            <i class="fa-solid fa-spinner fa-spin"></i>
+            Generando...
+            } @else {
+            <i class="fa-solid fa-file-pdf"></i>
+            Exportar Informe PDF
+            }
+        </button>
+        }
     </header>
 
     <!-- ═══════════════════════════════════════ -->
@@ -25,8 +39,10 @@
     <!-- ═══════════════════════════════════════ -->
     <!-- ERROR STATE                             -->
     <!-- ═══════════════════════════════════════ -->
-    <div class="c-history__empty">
-        <i class="fa-solid fa-triangle-exclamation"></i>
+    <div class="c-history__empty c-history__empty--error">
+        <div class="c-history__empty-icon">
+            <i class="fa-solid fa-triangle-exclamation"></i>
+        </div>
         <h2>Error al cargar</h2>
         <p>{{ error() }}</p>
         <button class="c-btn c-btn--primary" (click)="retry()">
@@ -52,7 +68,7 @@
     <!-- HISTORY GRID                            -->
     <!-- ═══════════════════════════════════════ -->
     <div class="c-history-grid">
-        @for (item of historyItems(); track item.product.id) {
+        @for (item of uniqueHistory(); track item.product.id) {
         <app-product-card [data]="item" (openDetail)="handleOpenDetail($event)" />
         }
     </div>

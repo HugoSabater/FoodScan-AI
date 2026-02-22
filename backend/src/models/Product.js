@@ -44,9 +44,7 @@ const Product = sequelize.define(
     image_url: {
       type: DataTypes.STRING(500),
       allowNull: true,
-      validate: {
-        isUrl: true,
-      },
+      // Note: isUrl validator removed — it rejected many valid OFF CDN URLs
     },
   },
   {
@@ -56,7 +54,7 @@ const Product = sequelize.define(
     indexes: [
       {
         unique: true,
-        fields: ['barcode'],
+        fields: ['code'], // 'code' is the actual DB column name (barcode is the JS alias)
       },
     ],
   }

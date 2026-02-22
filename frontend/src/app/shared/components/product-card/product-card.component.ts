@@ -1,4 +1,4 @@
-import { Component, input, computed, output } from '@angular/core';
+import { Component, input, computed, output, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ProductData, AnalysisData } from '../../../core/services/scan.service';
 
@@ -38,6 +38,9 @@ export class ProductCardComponent {
     if (score >= 40) return 'c-product-card__score--mid';
     return 'c-product-card__score--low';
   });
+
+  /** Tracks whether the product image failed to load */
+  readonly imageError = signal(false);
 
   /**
    * Handle "Ver detalles" button click

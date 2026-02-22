@@ -45,7 +45,7 @@ CREATE TABLE IF NOT EXISTS scans (
 
 -- Insert Mock Data
 INSERT IGNORE INTO users (id, name, email, password_hash) VALUES 
-(1, 'Demo User', 'demo@foodscan.ai', '$2b$10$EpOuccqG/7.0a8Z3N8.8..');
+(1, 'Hugo Sabater Gavarrell', 'hugo@foodscan.ai', '$2b$10$EpOuccqG/7.0a8Z3N8.8..');
 
 INSERT IGNORE INTO products (code, name, brand, nutri_score, nova_group, eco_score) VALUES
 ('3017620422003', 'Nutella', 'Ferrero', 'e', 4, 'e'),

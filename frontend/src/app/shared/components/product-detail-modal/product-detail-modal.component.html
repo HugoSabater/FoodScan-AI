@@ -15,8 +15,9 @@
         <!-- PRODUCT IMAGE                           -->
         <!-- ═══════════════════════════════════════ -->
         <div class="c-modal__image-container">
-            @if (data().product.image_url) {
-            <img [src]="data().product.image_url" [alt]="data().product.name" class="c-modal__image" />
+            @if (!imageError() && data().product.image_url) {
+            <img [src]="data().product.image_url" [alt]="data().product.name" class="c-modal__image"
+                (error)="imageError.set(true)" />
             } @else {
             <div class="c-modal__image-placeholder">
                 <i class="fa-solid fa-image"></i>
@@ -46,8 +47,9 @@
                     </div>
                     <div class="c-modal__info-item">
                         <span class="c-modal__label">Nutri-Score:</span>
-                        <span class="c-modal__value c-modal__value--nutriscore">
-                            {{ data().product.nutri_score?.toUpperCase() || 'N/A' }}
+                        <span class="c-modal__value c-modal__value--nutriscore"
+                            [ngClass]="getNutriScoreClass(data().product.nutri_score)">
+                            {{ data().product.nutri_score ? data().product.nutri_score.toUpperCase() : 'N/A' }}
                         </span>
                     </div>
                 </div>
@@ -77,43 +79,46 @@
                     Análisis Inteligente
                 </h3>
 
-                <div class="c-modal__analysis" [class.c-modal__analysis--suitable]="data().analysis.is_suitable"
-                    [class.c-modal__analysis--unsuitable]="!data().analysis.is_suitable">
+                @if (isProfileMismatch()) {
+                <div class="c-alert c-alert--warning"
+                    style="background-color: #fff3cd; color: #856404; padding: 0.75rem; border-radius: 8px; margin-bottom: 1rem; font-size: 0.85rem; border: 1px solid #ffeeba;">
+                    <i class="fa-solid fa-circle-info"></i> <strong>Aviso:</strong> Este producto fue escaneado con
+                    parámetros de dieta distintos a los actuales.
+                </div>
+                }
 
-                    <div class="c-modal__analysis-header">
-                        <i class="fa-solid" [class.fa-circle-check]="data().analysis.is_suitable"
-                            [class.fa-triangle-exclamation]="!data().analysis.is_suitable">
-                        </i>
-                        <span class="c-modal__analysis-status">
-                            {{ data().analysis.is_suitable ? 'Apto para tu perfil' : 'No apto para tu perfil' }}
+                @if (data().analysis.custom_health_score >= 50) {
+                <div class="c-alert c-alert--success">
+                    <i class="fa-solid fa-check-circle"></i> Apto para tu perfil
+                    <p>{{ data().analysis.analysis_reason }}</p>
+                </div>
+                } @else {
+                <div class="c-alert c-alert--danger" style="color: #e0241b;">
+                    <i class="fa-solid fa-triangle-exclamation"></i> No recomendado
+                    <p>{{ data().analysis.analysis_reason }}</p>
+                </div>
+                }
+
+                <div class="c-modal__analysis-footer">
+                    <div class="c-modal__score">
+                        <span class="c-modal__score-label">Health Score:</span>
+                        <span class="c-modal__score-value"
+                            [ngClass]="getHealthScoreColor(data().analysis.custom_health_score)">
+                            {{ data().analysis.custom_health_score }}/100
                         </span>
                     </div>
-
-                    <p class="c-modal__analysis-reason">
-                        {{ data().analysis.analysis_reason }}
-                    </p>
-
-                    <div class="c-modal__analysis-footer">
-                        <div class="c-modal__score">
-                            <span class="c-modal__score-label">Health Score:</span>
-                            <span class="c-modal__score-value">
-                                {{ data().analysis.custom_health_score }}/100
-                            </span>
-                        </div>
-                        <div class="c-modal__meta">
-                            <span class="c-modal__meta-item">
-                                <i class="fa-solid fa-robot"></i>
-                                {{ data().analysis.ai_model }}
-                            </span>
-                            <span class="c-modal__meta-item">
-                                <i class="fa-solid fa-clock"></i>
-                                {{ data().analysis.analyzed_at | date:'short' }}
-                            </span>
-                        </div>
+                    <div class="c-modal__meta">
+                        <span class="c-modal__meta-item">
+                            <i class="fa-solid fa-robot"></i>
+                            {{ data().analysis.ai_model }}
+                        </span>
+                        <span class="c-modal__meta-item">
+                            <i class="fa-solid fa-clock"></i>
+                            {{ data().analysis.analyzed_at | date:'short' }}
+                        </span>
                     </div>
                 </div>
             </div>
-
         </div>
 
         <!-- ═══════════════════════════════════════ -->

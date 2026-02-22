@@ -4,8 +4,13 @@
   <!-- HEADER                                  -->
   <!-- ═══════════════════════════════════════ -->
   <header class="c-product-card__header">
-    @if (data().product.image_url) {
-    <img class="c-product-card__image" [src]="data().product.image_url" [alt]="data().product.name" />
+    @if (!imageError() && data().product.image_url) {
+    <img class="c-product-card__image" [src]="data().product.image_url" [alt]="data().product.name"
+      (error)="imageError.set(true)" />
+    } @else {
+    <div class="c-product-card__image-fallback">
+      <i class="fa-solid fa-basket-shopping"></i>
+    </div>
     }
 
     <span class="c-nutriscore c-nutriscore--{{ data().product.nutri_score | lowercase }}">
@@ -25,10 +30,15 @@
   <!-- AI FEEDBACK                             -->
   <!-- ═══════════════════════════════════════ -->
   <div class="c-product-card__ai-feedback">
-    <div class="c-product-card__ai-header">
-      <i class="fa-solid" [class.fa-circle-check]="data().analysis.is_suitable"
-        [class.fa-triangle-exclamation]="!data().analysis.is_suitable"></i>
-      <span>{{ data().analysis.is_suitable ? 'Apto para ti' : 'No recomendado' }}</span>
+    <div class="c-product-card__ai-header"
+      [ngClass]="data().analysis.custom_health_score >= 50 ? 'u-text-success' : 'u-text-danger'">
+      @if (data().analysis.custom_health_score >= 50) {
+      <i class="fa-solid fa-circle-check"></i>
+      <span>Apto para ti</span>
+      } @else {
+      <i class="fa-solid fa-triangle-exclamation"></i>
+      <span>No recomendado</span>
+      }
     </div>
 
     <p class="c-product-card__ai-reason">

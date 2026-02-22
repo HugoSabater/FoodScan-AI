@@ -1,30 +1,192 @@
 @use '../../../styles/utilities/variables' as *;
 @use '../../../styles/utilities/mixins' as *;
 
+// ============================================
+// Stats Dashboard — Premium SaaS Layout
+// ============================================
+
+// ── Page wrapper ────────────────────────────
 .p-section {
-    padding: $spacing-xl 0;
+    padding: $spacing-2xl 0;
     min-height: 80vh;
+    background-color: $color-bg;
 }
 
 .c-container {
     width: 100%;
     max-width: $container-max-width;
     margin-inline: auto;
-    padding-inline: $container-padding;
+    padding-inline: $spacing-lg;
 }
 
-.c-card {
-    @include card;
-    padding: $spacing-lg;
-    background-color: $color-bg-card;
-    transition: transform $transition-base, box-shadow $transition-base;
+// ── Page Header ─────────────────────────────
+.s-header {
+    text-align: center;
+    margin-bottom: $spacing-2xl;
 
-    &:hover {
-        transform: translateY(-5px);
-        box-shadow: $shadow-card-hover;
+    &__title {
+        font-size: $font-size-2xl;
+        font-weight: $font-weight-bold;
+        color: $color-text;
+        margin-bottom: $spacing-sm;
+
+        i {
+            color: $color-primary;
+            margin-right: $spacing-xs;
+        }
+    }
+
+    &__subtitle {
+        font-size: $font-size-md;
+        color: $color-text-light;
     }
 }
 
+// ── Loading State ───────────────────────────
+.s-loading {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: $spacing-md;
+    padding: $spacing-3xl;
+    color: $color-primary;
+}
+
+// ── KPI Cards Grid ──────────────────────────
+.s-kpi-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: $spacing-xl; // 2rem breathing room
+    margin-bottom: $spacing-2xl;
+}
+
+.c-kpi-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: $spacing-xs;
+    padding: $spacing-xl $spacing-lg;
+    background-color: $color-bg-card;
+    border-radius: $radius-lg;
+    box-shadow: $shadow-card;
+    border-top: 3px solid transparent;
+    text-align: center;
+    cursor: pointer;
+    transition: transform $transition-base, box-shadow $transition-base;
+
+    &:hover {
+        transform: translateY(-4px);
+        box-shadow: $shadow-card-hover;
+    }
+
+    // Color variants via border accent + icon/value tinting
+    &--primary {
+        border-top-color: $color-primary;
+
+        .c-kpi-card__icon {
+            color: $color-primary;
+            background-color: rgba($color-primary, 0.1);
+        }
+
+        .c-kpi-card__value {
+            color: $color-primary;
+        }
+    }
+
+    &--success {
+        border-top-color: $color-success;
+
+        .c-kpi-card__icon {
+            color: $color-success;
+            background-color: rgba($color-success, 0.1);
+        }
+
+        .c-kpi-card__value {
+            color: $color-success;
+        }
+    }
+
+    &--danger {
+        border-top-color: $color-danger;
+
+        .c-kpi-card__icon {
+            color: $color-danger;
+            background-color: rgba($color-danger, 0.1);
+        }
+
+        .c-kpi-card__value {
+            color: $color-danger;
+        }
+    }
+
+    &__icon {
+        width: 3rem;
+        height: 3rem;
+        border-radius: $radius-full;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: $font-size-lg;
+        margin-bottom: $spacing-xs;
+    }
+
+    &__value {
+        font-size: 2.75rem; // Hero number — dominant on the card
+        font-weight: $font-weight-bold;
+        line-height: $line-height-tight;
+    }
+
+    &__label {
+        font-size: $font-size-sm;
+        font-weight: $font-weight-medium;
+        color: $color-text-light;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+    }
+}
+
+// ── Charts Grid ─────────────────────────────
+.s-charts-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr; // side-by-side on desktop
+    gap: $spacing-xl;
+}
+
+.c-chart-card {
+    background-color: $color-bg-card;
+    border-radius: $radius-lg;
+    box-shadow: $shadow-card;
+    padding: $spacing-xl;
+
+    &__title {
+        font-size: $font-size-md;
+        font-weight: $font-weight-semibold;
+        color: $color-text;
+        margin-bottom: $spacing-lg;
+        text-align: center;
+
+        i {
+            color: $color-primary;
+            margin-right: $spacing-xs;
+        }
+    }
+
+    &__canvas {
+        position: relative;
+        max-height: 300px; // Constrain canvas — prevents doughnut overflow
+        width: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        canvas {
+            max-height: 280px;
+        }
+    }
+}
+
+// ── Alert ───────────────────────────────────
 .c-alert {
     display: flex;
     align-items: center;
@@ -32,29 +194,215 @@
     border-radius: $radius-md;
     margin-bottom: $spacing-lg;
     gap: $spacing-sm;
-    font-weight: 500;
+    font-weight: $font-weight-medium;
 
     &--danger {
-        background-color: rgba($color-danger, 0.1);
+        background-color: rgba($color-danger, 0.08);
         color: $color-danger;
         border: 1px solid rgba($color-danger, 0.2);
     }
 }
 
-.chart-container {
-    position: relative;
-    height: 300px;
-    width: 100%;
-    @include flex-center;
+// ── Responsive ──────────────────────────────
+@media (max-width: $breakpoint-lg) {
+    .s-charts-grid {
+        grid-template-columns: 1fr; // stack charts on tablets
+    }
 }
 
-// Responsive adjustments
 @media (max-width: $breakpoint-md) {
-    .l-grid--3-cols {
-        grid-template-columns: 1fr;
+    .s-kpi-grid {
+        grid-template-columns: 1fr; // stack KPI cards on mobile
+        gap: $spacing-md;
     }
 
-    .l-grid--2-cols {
+    .s-charts-grid {
         grid-template-columns: 1fr;
+        gap: $spacing-md;
+    }
+
+    .c-kpi-card__value {
+        font-size: $font-size-3xl; // slightly smaller on mobile but still hero
+    }
+}
+
+// ── Glassmorphism Modal ───────────────────────
+.c-glass-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 1000;
+    background: rgba(0, 0, 0, 0.4);
+    display: flex;
+    align-items: flex-end;
+    /* Alineado abajo como Bottom Sheet */
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
+}
+
+.c-glass-modal {
+    width: 100%;
+    max-height: 85vh;
+    display: flex;
+    flex-direction: column;
+    background: rgba(255, 255, 255, 0.85);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border-top-left-radius: 24px;
+    border-top-right-radius: 24px;
+    box-shadow: 0 -10px 40px rgba(0, 0, 0, 0.1);
+    border-top: 1px solid rgba(255, 255, 255, 0.5);
+    animation: slideUp 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+
+    &__header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: $spacing-lg $spacing-xl;
+        border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+
+        h3 {
+            margin: 0;
+            font-size: $font-size-lg;
+            font-weight: $font-weight-bold;
+            color: $color-text;
+            display: flex;
+            align-items: center;
+            gap: $spacing-sm;
+
+            i {
+                color: $color-primary;
+            }
+
+            small {
+                color: $color-text-light;
+                font-weight: $font-weight-regular;
+                font-size: $font-size-sm;
+            }
+        }
+    }
+
+    &__close {
+        background: none;
+        border: none;
+        font-size: $font-size-xl;
+        color: $color-text-light;
+        cursor: pointer;
+        padding: $spacing-xs;
+        transition: color $transition-base, transform $transition-fast;
+
+        &:hover {
+            color: $color-danger;
+            transform: scale(1.1);
+        }
+    }
+
+    &__content {
+        flex: 1;
+        overflow-y: auto;
+        padding: $spacing-lg $spacing-xl;
+    }
+}
+
+// ── Product List Rows ─────────────────────────
+.c-item-row {
+    display: flex;
+    align-items: center;
+    gap: $spacing-md;
+    padding: $spacing-md 0;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+
+    &:last-child {
+        border-bottom: none;
+    }
+
+    &__image-container {
+        width: 56px;
+        height: 56px;
+        flex-shrink: 0;
+        border-radius: $radius-md;
+        overflow: hidden;
+        background-color: hsla(0, 0%, 0%, 0.03);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border: 1px solid rgba(0, 0, 0, 0.05);
+    }
+
+    &__image {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+
+    &__image-placeholder {
+        font-size: $font-size-lg;
+        color: rgba($color-text-light, 0.3);
+    }
+
+    &__info {
+        flex: 1;
+        min-width: 0; // for ellipsis
+    }
+
+    &__name {
+        margin: 0 0 2px;
+        font-size: $font-size-md;
+        font-weight: $font-weight-semibold;
+        color: $color-text;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    &__brand {
+        margin: 0 0 $spacing-xs;
+        font-size: $font-size-xs;
+        color: $color-text-light;
+        text-transform: uppercase;
+        letter-spacing: 0.02em;
+    }
+
+    &__meta {
+        display: flex;
+        align-items: center;
+        gap: $spacing-sm;
+    }
+
+    &__date {
+        font-size: $font-size-xs;
+        color: $color-text-light;
+        opacity: 0.6;
+    }
+}
+
+.c-empty-state {
+    padding: $spacing-3xl;
+    text-align: center;
+    color: $color-text-light;
+
+    i {
+        font-size: 2.5rem;
+        opacity: 0.3;
+        margin-bottom: $spacing-sm;
+        display: block;
+    }
+
+    p {
+        margin: 0;
+        font-size: $font-size-sm;
+    }
+}
+
+.u-mb-sm {
+    margin-bottom: $spacing-sm !important;
+}
+
+@keyframes slideUp {
+    from {
+        transform: translateY(100%);
+    }
+
+    to {
+        transform: translateY(0);
     }
 }

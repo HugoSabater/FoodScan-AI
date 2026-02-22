@@ -25,6 +25,8 @@ export interface AnalysisData {
     custom_health_score: number;
     ai_model: string;
     analyzed_at: string;
+    diet?: string;
+    allergies?: string;
 }
 
 /**
@@ -165,6 +167,7 @@ export interface HistoryScan {
     product_id: number;
     scanned_at: string;
     product: ProductData;
+    analysis_result?: AnalysisData;
 }
 
 export interface HistoryResponse {

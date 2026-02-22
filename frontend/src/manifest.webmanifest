@@ -1,7 +1,7 @@
 {
   "name": "FoodScan AI",
   "short_name": "FoodScan",
-  "theme_color": "#2ECC71",
+  "theme_color": "#2ebf73",
   "background_color": "#ffffff",
   "display": "standalone",
   "scope": "./",

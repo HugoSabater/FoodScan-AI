@@ -7,7 +7,7 @@
 
 require('dotenv').config();
 
-const { sequelize, User, Product, Scan } = require('../models');
+const { sequelize, User, Product } = require('../models');
 
 // =====================================
 // DEMO USERS
@@ -15,24 +15,24 @@ const { sequelize, User, Product, Scan } = require('../models');
 
 const demoUsers = [
   {
-    username: 'admin',
-    email: 'admin@foodscan.com',
-    password: 'admin123',
-    allergies: [],
-    dietary_preference: 'none',
+    name: 'Hugo Sabater Gavarrell',
+    email: 'hugo@foodscan.ai',
+    password: 'hugo1234',
+    allergies: ['gluten'],
+    dietary_preference: 'keto',
   },
   {
-    username: 'veganuser',
-    email: 'vegan@foodscan.com',
-    password: 'vegan123',
+    name: 'Usuario Vegano Demo',
+    email: 'vegan@foodscan.ai',
+    password: 'vegan1234',
     allergies: [],
     dietary_preference: 'vegan',
   },
   {
-    username: 'allergyuser',
-    email: 'allergy@foodscan.com',
-    password: 'allergy123',
-    allergies: ['nuts', 'gluten'],
+    name: 'Admin Demo',
+    email: 'admin@foodscan.ai',
+    password: 'admin1234',
+    allergies: [],
     dietary_preference: 'none',
   },
 ];
@@ -47,96 +47,36 @@ const demoProducts = [
     name: 'Coca-Cola Original',
     brand: 'Coca-Cola',
     ingredients_text:
-      'Agua carbonatada, azúcar, colorante (E-150d), acidulante (ácido fosfórico), aromas naturales (incluyendo cafeína).',
+      'Agua carbonatada, azúcar, colorante (E-150d), acidulante (ácido fosfórico), aromas.',
     nutri_score: 'e',
-    image_url:
-      'https://images.openfoodfacts.org/images/products/544/900/000/0996/front_en.426.400.jpg',
+    image_url: 'assets/products/5449000000996.jpg',
   },
   {
-    barcode: '8410376010107',
-    name: 'Copos de Avena Integral',
-    brand: 'Quaker',
-    ingredients_text: 'Copos de avena integral 100%.',
-    nutri_score: 'a',
-    image_url:
-      'https://images.openfoodfacts.org/images/products/841/037/601/0107/front_es.38.400.jpg',
-  },
-  {
-    barcode: '8480000591234',
-    name: 'Hummus Clásico',
-    brand: 'Mercadona',
+    barcode: '8410014478764',
+    name: 'ColaCao Original',
+    brand: 'Idilia Foods',
     ingredients_text:
-      'Garbanzos (58%), agua, pasta de sésamo (tahini) (9%), aceite de girasol, zumo de limón, sal, ajo, comino.',
-    nutri_score: 'b',
-    image_url:
-      'https://images.openfoodfacts.org/images/products/848/000/059/1234/front_es.10.400.jpg',
-  },
-  {
-    barcode: '7622210449283',
-    name: 'Oreo Original',
-    brand: 'Oreo',
-    ingredients_text:
-      'Harina de trigo, azúcar, aceite de palma, cacao desgrasado en polvo (4.6%), almidón de trigo, jarabe de glucosa-fructosa, gasificantes, sal, emulgentes, aroma.',
-    nutri_score: 'e',
-    image_url:
-      'https://images.openfoodfacts.org/images/products/762/221/044/9283/front_en.299.400.jpg',
-  },
-  {
-    barcode: '8480000108326',
-    name: 'Yogur Natural',
-    brand: 'Hacendado',
-    ingredients_text: 'Leche pasteurizada, fermentos lácticos.',
-    nutri_score: 'a',
-    image_url:
-      'https://images.openfoodfacts.org/images/products/848/000/010/8326/front_es.58.400.jpg',
-  },
-  {
-    barcode: '80135463',
-    name: 'Nutella',
-    brand: 'Ferrero',
-    ingredients_text:
-      'Azúcar, aceite de palma, avellanas (13%), cacao desgrasado (7.4%), leche desnatada en polvo (6.6%), suero de leche en polvo, emulgentes: lecitinas (soja), vainillina.',
-    nutri_score: 'e',
-    image_url:
-      'https://images.openfoodfacts.org/images/products/000/080/135/463/front_en.88.400.jpg',
-  },
-  {
-    barcode: '8480000210470',
-    name: 'Pan de Molde Integral',
-    brand: 'Hacendado',
-    ingredients_text:
-      'Harina integral de trigo (52%), agua, levadura, aceite de girasol, sal, gluten de trigo, vinagre de vino.',
-    nutri_score: 'b',
-    image_url:
-      'https://images.openfoodfacts.org/images/products/848/000/021/0470/front_es.81.400.jpg',
-  },
-  {
-    barcode: '8437008180014',
-    name: 'Agua Mineral Natural',
-    brand: 'Bezoya',
-    ingredients_text: 'Agua mineral natural.',
-    nutri_score: 'a',
-    image_url:
-      'https://images.openfoodfacts.org/images/products/843/700/818/0014/front_es.42.400.jpg',
-  },
-  {
-    barcode: '8410127044101',
-    name: 'Aceite de Oliva Virgen Extra',
-    brand: 'Carbonell',
-    ingredients_text: 'Aceite de oliva virgen extra.',
-    nutri_score: 'c',
-    image_url:
-      'https://images.openfoodfacts.org/images/products/841/012/704/4101/front_es.78.400.jpg',
+      'Azúcar, cacao natural 22%, crema de cereal kola-malteado, extracto de malta, sales minerales, aromas.',
+    nutri_score: 'd',
+    image_url: 'assets/products/8410014478764.jpg',
   },
   {
     barcode: '7613034626844',
     name: 'KitKat',
     brand: 'Nestlé',
     ingredients_text:
-      'Azúcar, harina de trigo, manteca de cacao, leche desnatada en polvo, pasta de cacao, grasa de palma, grasa láctea, emulgente (lecitina de soja), levadura, sal, aroma.',
+      'Azúcar, harina de trigo, manteca de cacao, leche desnatada, pasta de cacao, grasa de palma.',
     nutri_score: 'e',
-    image_url:
-      'https://images.openfoodfacts.org/images/products/761/303/462/6844/front_en.168.400.jpg',
+    image_url: 'assets/products/7613034626844.jpg',
+  },
+  {
+    barcode: '80135463',
+    name: 'Nutella',
+    brand: 'Ferrero',
+    ingredients_text:
+      'Azúcar, aceite de palma, avellanas, cacao desgrasado, leche desnatada en polvo, lecitinas.',
+    nutri_score: 'e',
+    image_url: 'assets/products/80135463.jpg',
   },
 ];
 
@@ -165,26 +105,29 @@ const seed = async () => {
     const createdProducts = await Product.bulkCreate(demoProducts);
     console.info(`✅ Created ${createdProducts.length} products.\n`);
 
-    // Create Random Scans
+    // Create Demo Scans (guarantee at least 5 for user 1 - Hugo)
     console.info('📷 Creating demo scans...');
-    const scans = [];
     const now = new Date();
 
-    for (let i = 0; i < 5; i++) {
-      const randomUser = createdUsers[Math.floor(Math.random() * createdUsers.length)];
-      const randomProduct = createdProducts[Math.floor(Math.random() * createdProducts.length)];
+    // Use codes from demoProducts directly (they are the PK values we inserted)
+    const productCodes = demoProducts.map(p => p.barcode);
+    const userIds = createdUsers.map(u => u.id);
 
-      // Random date within the last 7 days
-      const randomDate = new Date(now.getTime() - Math.random() * 7 * 24 * 60 * 60 * 1000);
-
-      scans.push({
-        user_id: randomUser.id,
-        product_id: randomProduct.id,
-        scanned_at: randomDate,
-      });
+    const scanValues = [];
+    for (let i = 0; i < 10; i++) {
+      const userId = i < 5 ? userIds[0] : userIds[Math.floor(Math.random() * userIds.length)];
+      const code = productCodes[Math.floor(Math.random() * productCodes.length)];
+      const dt = new Date(now.getTime() - Math.random() * 30 * 24 * 60 * 60 * 1000)
+        .toISOString()
+        .slice(0, 19)
+        .replace('T', ' ');
+      scanValues.push(`(${userId}, '${code}', '${dt}', '${dt}', '${dt}')`);
     }
 
-    const createdScans = await Scan.bulkCreate(scans);
+    await sequelize.query(
+      `INSERT INTO scans (user_id, product_code, scanned_at, created_at, updated_at) VALUES ${scanValues.join(', ')}`
+    );
+    const createdScans = { length: scanValues.length };
     console.info(`✅ Created ${createdScans.length} scans.\n`);
 
     // Summary
@@ -197,7 +140,7 @@ const seed = async () => {
     console.info(`   • Scans: ${createdScans.length}`);
     console.info('\n👤 Demo Accounts:');
     demoUsers.forEach(user => {
-      console.info(`   • ${user.email} (password: ${user.password})`);
+      console.info(`   • ${user.name} <${user.email}>`);
     });
     console.info('\n');
   } catch (error) {

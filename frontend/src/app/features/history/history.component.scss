@@ -26,11 +26,24 @@
 
 .c-history__header {
     margin-bottom: 2rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
     text-align: center;
 
     @media (min-width: $breakpoint-md) {
+        flex-direction: row;
+        align-items: flex-start;
+        justify-content: space-between;
         text-align: left;
     }
+}
+
+.c-history__header-text {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
 }
 
 .c-history__title {
@@ -106,21 +119,40 @@
 .c-history__empty {
     display: flex;
     flex-direction: column;
-    align-items: center;
+    align-items: center; // horizontally centered
     justify-content: center;
     gap: 1rem;
     min-height: 400px;
-    text-align: center;
+    text-align: center; // text centered
     color: $color-text-light;
 
-    i {
-        font-size: 5rem;
-        opacity: 0.3;
+    // Generic icon (empty state — inbox icon, muted)
+    >i {
+        font-size: 4rem;
+        opacity: 0.25;
         color: $color-text-light;
     }
 
+    // Icon wrapper (used in error state for the circle bg)
+    .c-history__empty-icon {
+        width: 5rem;
+        height: 5rem;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background-color: rgba($color-danger, 0.08);
+        margin-bottom: 0.5rem;
+
+        i {
+            font-size: 2.25rem;
+            color: rgba($color-danger, 0.75); // soft — not aggressive
+            opacity: 1;
+        }
+    }
+
     h2 {
-        font-size: 1.5rem;
+        font-size: 1.375rem;
         font-weight: 600;
         color: $color-text;
         margin: 0;
@@ -129,7 +161,23 @@
     p {
         font-size: 1rem;
         margin: 0;
-        max-width: 400px;
+        max-width: 360px;
+        line-height: 1.5;
+    }
+
+    // Constrain action button — never full width
+    .c-btn {
+        max-width: 200px;
+        align-self: center;
+        justify-content: center;
+        margin-top: 0.5rem;
+    }
+
+    // Error modifier — nothing extra needed beyond icon wrapper above
+    &--error {
+        h2 {
+            color: $color-danger;
+        }
     }
 }
 
@@ -162,6 +210,41 @@
 
         &:active {
             transform: translateY(0);
+        }
+    }
+
+    // ── PDF Export button ──────────────────────────────────────────
+    &--outline {
+        background: transparent;
+        color: #dc2626; // PDF red
+        border: 2px solid #dc2626;
+        padding: 0.625rem 1.25rem;
+        align-self: flex-start; // don't stretch in flex column
+        white-space: nowrap;
+        margin-top: 0; // header handles spacing
+
+        i {
+            transition: transform 0.2s ease;
+        }
+
+        &:hover:not(:disabled) {
+            background: #dc2626;
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 14px rgba(220, 38, 38, 0.3);
+
+            i {
+                transform: scale(1.15);
+            }
+        }
+
+        &:active:not(:disabled) {
+            transform: translateY(0);
+        }
+
+        &:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
         }
     }
 }

@@ -195,3 +195,12 @@ body {
         color: $color-text-light;
     }
 }
+
+// ── Text Utilities ──────────────────────────
+.u-text-success {
+    color: $color-success !important;
+}
+
+.u-text-danger {
+    color: $color-danger !important;
+}

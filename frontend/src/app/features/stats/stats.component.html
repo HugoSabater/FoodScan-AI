@@ -1,18 +1,20 @@
 <div class="p-section">
     <div class="c-container">
-        <header class="u-text-center u-mb-xl">
-            <h1 class="u-text-h2 u-color-primary u-mb-sm">
-                <i class="fa-solid fa-chart-pie u-mr-xs"></i> Estadísticas
+
+        <!-- Page Header -->
+        <header class="s-header">
+            <h1 class="s-header__title">
+                <i class="fa-solid fa-chart-pie"></i> Estadísticas
             </h1>
-            <p class="u-text-body u-color-text-light">
+            <p class="s-header__subtitle">
                 Analiza tu historial de escaneos y la calidad nutricional de tu dieta.
             </p>
         </header>
 
         @if (loading()) {
-        <div class="u-text-center u-p-xl">
-            <i class="fa-solid fa-circle-notch fa-spin fa-3x u-color-primary"></i>
-            <p class="u-mt-md">Cargando estadísticas...</p>
+        <div class="s-loading">
+            <i class="fa-solid fa-circle-notch fa-spin fa-3x"></i>
+            <p>Cargando estadísticas...</p>
         </div>
         } @else if (error()) {
         <div class="c-alert c-alert--danger">
@@ -21,43 +23,118 @@
             <button class="c-btn c-btn--outline u-ml-auto" (click)="loadStats()">Reintentar</button>
         </div>
         } @else {
-        <!-- Summary Cards -->
-        <div class="l-grid l-grid--3-cols u-mb-xl">
-            <div class="c-card u-text-center">
-                <div class="u-text-h4 u-color-text-light u-mb-xs">Total Escaneos</div>
-                <div class="u-text-h1 u-color-primary">{{ stats()?.totalScans || 0 }}</div>
+
+        <!-- KPI Cards -->
+        <section class="s-kpi-grid" aria-label="Resumen de estadísticas">
+            <div class="c-kpi-card c-kpi-card--primary" (click)="activeFilter.set('all')">
+                <div class="c-kpi-card__icon">
+                    <i class="fa-solid fa-camera"></i>
+                </div>
+                <div class="c-kpi-card__value">{{ stats()?.totalScans || 0 }}</div>
+                <div class="c-kpi-card__label">Total Escaneos</div>
             </div>
-            <div class="c-card u-text-center">
-                <div class="u-text-h4 u-color-text-light u-mb-xs">Productos Aptos</div>
-                <div class="u-text-h1 u-color-success">{{ stats()?.suitability?.suitable || 0 }}</div>
+
+            <div class="c-kpi-card c-kpi-card--success" (click)="activeFilter.set('apt')">
+                <div class="c-kpi-card__icon">
+                    <i class="fa-solid fa-circle-check"></i>
+                </div>
+                <div class="c-kpi-card__value">{{ stats()?.suitability?.suitable || 0 }}</div>
+                <div class="c-kpi-card__label">Productos Aptos</div>
             </div>
-            <div class="c-card u-text-center">
-                <div class="u-text-h4 u-color-text-light u-mb-xs">Productos No Aptos</div>
-                <div class="u-text-h1 u-color-danger">{{ stats()?.suitability?.unsuitable || 0 }}</div>
+
+            <div class="c-kpi-card c-kpi-card--danger" (click)="activeFilter.set('not-apt')">
+                <div class="c-kpi-card__icon">
+                    <i class="fa-solid fa-circle-xmark"></i>
+                </div>
+                <div class="c-kpi-card__value">{{ stats()?.suitability?.unsuitable || 0 }}</div>
+                <div class="c-kpi-card__label">Productos No Aptos</div>
             </div>
-        </div>
+        </section>
 
         <!-- Charts Grid -->
-        <div class="l-grid l-grid--2-cols">
+        <section class="s-charts-grid" aria-label="Gráficos de análisis">
             <!-- Doughnut Chart -->
-            <article class="c-card">
-                <h3 class="u-text-h3 u-mb-md u-text-center">Resumen de tu Dieta</h3>
-                <div class="chart-container">
+            <article class="c-chart-card">
+                <h2 class="c-chart-card__title">
+                    <i class="fa-solid fa-circle-half-stroke"></i>
+                    Resumen de tu Dieta
+                </h2>
+                <div class="c-chart-card__canvas">
                     <canvas baseChart [data]="doughnutChartData" [type]="doughnutChartType"
-                        [options]="doughnutChartOptions">
+                        [options]="doughnutChartOptions" (chartClick)="onChartClick($event, 'donut')">
                     </canvas>
                 </div>
             </article>
 
             <!-- Bar Chart -->
-            <article class="c-card">
-                <h3 class="u-text-h3 u-mb-md u-text-center">Distribución NutriScore</h3>
-                <div class="chart-container">
-                    <canvas baseChart [data]="barChartData" [type]="barChartType" [options]="barChartOptions">
+            <article class="c-chart-card">
+                <h2 class="c-chart-card__title">
+                    <i class="fa-solid fa-bars-staggered"></i>
+                    Distribución NutriScore
+                </h2>
+                <div class="c-chart-card__canvas">
+                    <canvas baseChart [data]="barChartData" [type]="barChartType" [options]="barChartOptions"
+                        (chartClick)="onChartClick($event, 'bar')">
                     </canvas>
                 </div>
             </article>
-        </div>
+        </section>
+
         }
     </div>
 </div>
+
+<!-- Glassmorphism Modal Overlay -->
+@if (activeFilter()) {
+<div class="c-glass-overlay" (click)="activeFilter.set(null)">
+    <div class="c-glass-modal" (click)="$event.stopPropagation()">
+        <div class="c-glass-modal__header">
+            <h3>
+                <i class="fa-solid fa-list-ul"></i>
+                Detalle de Escaneos
+                <small>({{ filteredHistory().length }})</small>
+            </h3>
+            <button class="c-glass-modal__close" (click)="activeFilter.set(null)">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+        </div>
+
+        <div class="c-glass-modal__content">
+            <div class="l-product-list">
+                @for (item of filteredHistory(); track item.id) {
+                <div class="c-item-row">
+                    <div class="c-item-row__image-container">
+                        @if (item.product.image_url) {
+                        <img [src]="item.product.image_url" [alt]="item.product.name" class="c-item-row__image">
+                        } @else {
+                        <div class="c-item-row__image-placeholder">
+                            <i class="fa-solid fa-image"></i>
+                        </div>
+                        }
+                    </div>
+                    <div class="c-item-row__info">
+                        <h4 class="c-item-row__name">{{ item.product.name }}</h4>
+                        <p class="c-item-row__brand">{{ item.product.brand }}</p>
+                        <div class="c-item-row__meta">
+                            <span class="c-badge"
+                                [class.c-badge--success]="(item.analysis_result?.custom_health_score ?? 0) >= 50"
+                                [class.c-badge--danger]="(item.analysis_result?.custom_health_score ?? 0) < 50">
+                                {{ (item.analysis_result?.custom_health_score ?? 0) >= 50 ? 'Apto' : 'No Apto' }}
+                            </span>
+                            <span class="c-item-row__date">
+                                {{ item.scanned_at | date:'shortDate' }}
+                            </span>
+                        </div>
+                    </div>
+                </div>
+                } @empty {
+                <div class="c-empty-state">
+                    <i class="fa-solid fa-magnifying-glass u-mb-sm"></i>
+                    <p>No se encontraron productos en esta categoría.</p>
+                </div>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+}

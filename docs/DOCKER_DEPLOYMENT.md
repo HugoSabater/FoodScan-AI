@@ -53,9 +53,9 @@ docker-compose logs -f
 
 ### 4. Access Application
 
-- **Frontend**: http://localhost
+- **Frontend**: http://localhost:8080
 - **Backend API**: http://localhost:3000
-- **MySQL**: localhost:3306
+- **Adminer Panel**: http://localhost:8888
 
 ---
 

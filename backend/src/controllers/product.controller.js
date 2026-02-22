@@ -56,13 +56,15 @@ const getAllProducts = async (_req, res, next) => {
 };
 
 /**
- * Get trending products for Quick Scan
+ * Get trending products for Quick Scan (Web Scraper strategy)
  * @route GET /api/products/trending
  */
 const getTrendingProducts = async (_req, res, next) => {
   try {
-    const offService = require('../services/off.service');
-    const trendingProducts = await offService.getTrendingProducts();
+    const trendingProducts = await Product.findAll({
+      limit: 6,
+      order: [['updated_at', 'DESC']],
+    });
 
     return res.status(200).json({
       success: true,

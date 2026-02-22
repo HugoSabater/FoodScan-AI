@@ -152,6 +152,15 @@ export class ScannerComponent implements OnInit {
     }
 
     /**
+     * Handle chip image load failure.
+     * Nullifies image_url on the product so the @if guard
+     * falls through to the icon fallback in the template.
+     */
+    handleImageError(product: TrendingProduct): void {
+        product.image_url = null as unknown as string;
+    }
+
+    /**
      * Close product detail modal
      */
     closeModal(): void {

@@ -7,6 +7,7 @@ const { sequelize } = require('../config/database');
 const User = require('./User');
 const Product = require('./Product');
 const Scan = require('./Scan');
+const AnalysisResult = require('./analysis_result.model');
 
 // =====================================
 // ASSOCIATIONS
@@ -64,5 +65,6 @@ module.exports = {
   User,
   Product,
   Scan,
+  AnalysisResult,
   syncDatabase,
 };

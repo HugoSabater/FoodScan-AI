@@ -10,7 +10,13 @@ const User = sequelize.define(
       primaryKey: true,
       autoIncrement: true,
     },
-    // username removed as not present in DB schema
+    name: {
+      type: DataTypes.STRING(255),
+      allowNull: false,
+      validate: {
+        notEmpty: true,
+      },
+    },
     email: {
       type: DataTypes.STRING(100),
       allowNull: false,

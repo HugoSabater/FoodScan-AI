@@ -89,7 +89,8 @@
                 [disabled]="scanService.loading()" (click)="simulateScan(product.barcode)">
                 <!-- Product Image or Fallback Icon -->
                 @if (product.image_url) {
-                <img [src]="product.image_url" [alt]="product.name" class="c-quick-actions__image" />
+                <img [src]="product.image_url" [alt]="product.name" class="c-quick-actions__image"
+                    (error)="handleImageError(product)" />
                 } @else {
                 <i class="c-quick-actions__icon fa-solid fa-box"></i>
                 }

@@ -57,6 +57,25 @@
     flex-shrink: 0;
   }
 
+  // ── Image fallback (shown when image_url is broken / null) ──
+
+  &__image-fallback {
+    width: 100px;
+    height: 100px;
+    flex-shrink: 0;
+    border-radius: $radius-md;
+    background: $color-bg-alt; // soft grey — unobtrusive
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    i {
+      font-size: $font-size-2xl;
+      color: $color-text-light;
+      opacity: 0.5;
+    }
+  }
+
   // ── Body ────────────────────────────────
 
   &__body {

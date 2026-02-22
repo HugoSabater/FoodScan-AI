@@ -343,36 +343,38 @@
     &__chips {
         display: flex;
         flex-wrap: wrap;
-        gap: $spacing-md;
+        gap: 1rem; // breathing room between chips
     }
 
-    // ── Individual Chip ───────────────────────
+    // ── Individual Chip — Apple Health pill style ─
 
     &__chip {
-        display: flex;
+        display: inline-flex; // shrinks to content width
         align-items: center;
-        gap: $spacing-sm;
-        padding: $spacing-sm $spacing-md;
-        background: $color-bg;
-        border: 2px solid $color-border;
-        border-radius: $radius-lg;
+        gap: 0.75rem; // comfortable spacing between image + label
+        padding: $spacing-sm $spacing-lg;
+        max-width: 250px; // prevent infinite growth
+        background: white;
+        border: 1.5px solid $color-border;
+        border-radius: 100vmax; // true pill regardless of width
         cursor: pointer;
         transition: all $transition-base;
         font-weight: $font-weight-medium;
+        font-size: $font-size-sm;
         color: $color-text;
+        box-shadow: $shadow-sm;
 
-        // Hover effect
+        // Hover — lift + green glow
         &:hover:not(:disabled) {
             transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12), 0 0 0 2px hsla(145, 90%, 50%, 0.15);
             border-color: $color-primary-light;
-            background: linear-gradient(135deg, $color-bg 0%, hsla(145, 90%, 50%, 0.05) 100%);
         }
 
         // Active (loading) state
         &--active {
             border-color: $color-primary;
-            background: linear-gradient(135deg, hsla(145, 90%, 50%, 0.1) 0%, hsla(145, 90%, 50%, 0.15) 100%);
+            background: hsla(145, 90%, 50%, 0.06);
             pointer-events: none;
 
             .c-quick-actions__icon {
@@ -399,18 +401,20 @@
         }
     }
 
-    // ── Product Image ─────────────────────────
+    // ── Product Image — circular avatar ──────────
 
     &__image {
         width: 32px;
         height: 32px;
-        object-fit: contain;
-        border-radius: $radius-sm;
+        flex-shrink: 0; // 👈 never squish into an ellipse
+        object-fit: cover; // fill the circle without distortion
+        border-radius: 50%; // perfect circle
+        border: 1px solid $color-border;
         background: $color-bg;
         transition: transform $transition-base;
 
         .c-quick-actions__chip:hover:not(:disabled) & {
-            transform: scale(1.1);
+            transform: scale(1.08);
         }
     }
 
@@ -418,6 +422,10 @@
 
     &__label {
         font-size: $font-size-sm;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        max-width: 150px;
     }
 
     // ── Loading State ─────────────────────────

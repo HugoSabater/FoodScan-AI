@@ -199,11 +199,49 @@
     color: $color-text;
     font-weight: 600;
 
+    // Nutri-Score badge — inline box, color from c-nutriscore--{letter}
     &--nutriscore {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 36px;
+        height: 36px;
+        border-radius: $radius-sm;
+        color: white;
+        font-weight: bold;
         text-transform: uppercase;
-        color: $color-primary;
+        font-size: 1rem;
+        letter-spacing: 0;
     }
 }
+
+// ── Nutri-Score A–E colour palette (official) ────────────────────────────────
+// A: dark green  B: light green  C: yellow  D: orange  E: red
+.c-nutriscore--a {
+    background-color: #1a7337;
+}
+
+.c-nutriscore--b {
+    background-color: #56a02d;
+}
+
+.c-nutriscore--c {
+    background-color: #e8b10d;
+}
+
+.c-nutriscore--d {
+    background-color: #e07416;
+}
+
+.c-nutriscore--e {
+    background-color: #e0241b;
+}
+
+.c-nutriscore--unknown {
+    background-color: $color-border;
+    color: $color-text-light;
+}
+
 
 // ────────────────────────────────────────────
 // INGREDIENTS
@@ -302,7 +340,15 @@
 .c-modal__score-value {
     font-size: 1.5rem;
     font-weight: 700;
-    color: $color-primary;
+    color: $color-text; // base — overridden by --good / --bad
+
+    &--good {
+        color: $color-primary; // green
+    }
+
+    &--bad {
+        color: $color-danger; // red
+    }
 }
 
 .c-modal__meta {
