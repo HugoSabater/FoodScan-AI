@@ -12,7 +12,7 @@
 
 ## 🚀 Demo en Vivo
 
-👉 **[Ver Proyecto Desplegado](https://foodscan-ai.vercel.app)** *(Actualizar tras desplegar)*
+👉 **[Ver Proyecto Desplegado](https://foodscan-ai-nine.vercel.app/)**
 
 ---
 
@@ -34,11 +34,11 @@ Este proyecto sigue una arquitectura **Clean Code** con separación estricta de 
 * **Diseño:** Glassmorphism, animaciones CSS nativas y diseño 100% Responsive.
 * **Características:** Escaneo visual (ZXing), Modo manual, PWA Ready.
 
-### ⚙️ Backend (API REST)
-* **Runtime:** Node.js + Express.
-* **Base de Datos:** MySQL (Gestionada con Sequelize ORM).
-* **IA:** Integración con **Llama-3-70b** vía Groq SDK para análisis semántico de ingredientes.
-* **Calidad:** ESLint, Prettier, Morgan (Logs), Helmet (Seguridad).
+### ⚙️ Backend (API REST en Railway)
+* **Runtime & Despliegue:** Node.js + Express alojado en **Railway**.
+* **Base de Datos:** MySQL en la nube (Gestionada con Sequelize ORM).
+* **IA & Rendimiento:** Llama-3-70b (vía Groq SDK) con sistema de **Caché Global** (`AnalysisResult`) para evitar peticiones redundantes y latencia.
+* **Calidad:** ESLint, Prettier, Morgan (Logs), Helmet (Seguridad) y validación de variables de entorno.
 
 ---
 
@@ -65,6 +65,8 @@ FoodScan-AI/
 │
 ├── docs/                   # 📚 Documentación
 │   ├── IA_WORKLOG.md       # Diario de desarrollo con IA
+│   ├── DOCKER_DEPLOYMENT.md # Documentación de despliegue con Docker
+│   ├── INFORME_AUDITORIA_FINAL.md # Informe basado en los criterios, realizada por la IA
 │   └── assets/             # Screenshots
 │
 ├── LICENSE                 # MIT License

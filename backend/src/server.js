@@ -10,7 +10,7 @@ const PORT = env.port;
 
 async function start() {
   // 1. Sync Sequelize models → runs ALTER TABLE for any new columns
-  await syncDatabase({ force: true });
+  await syncDatabase({ alter: true });
 
   // 2. Only start listening once the schema is ready
   const server = app.listen(PORT, () => {
