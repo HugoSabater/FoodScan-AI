@@ -140,6 +140,18 @@ Puedes consultar el registro completo de prompts, decisiones de arquitectura y r
 
 ---
 
+## 🗺️ Roadmap y Trabajo Futuro (Versión 2.0)
+
+El desarrollo de FoodScan AI es un proyecto vivo. Actualmente se está trabajando en una rama paralela (`feature/v2-redesign`) proyectada para el próximo mes, que incluirá un rediseño completo y nuevas funcionalidades core.
+
+**Novedades planificadas para la V2:**
+* 🎨 **Nueva Interfaz UI/UX (Stitch):** Rediseño integral de la plataforma hacia un modelo de "Dashboard" más analítico, moderno y estructurado.
+* 🔐 **Sistema de Autenticación:** Módulo de Login/Registro seguro para que los usuarios puedan mantener su perfil y sincronizar su historial en múltiples dispositivos.
+* ❤️ **Favoritos y Comparador:** Nueva sección para guardar productos recurrentes y una herramienta para comparar macros y alérgenos de dos productos frente a frente.
+* 📈 **Analíticas Avanzadas (Health & Habits):** Gráficos evolutivos del progreso nutricional mensual y seguimiento de macronutrientes en base al perfil biométrico del usuario.
+
+---
+
 ## 👤 Autor
 
 **Hugo Sabater**
