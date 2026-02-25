@@ -4,6 +4,7 @@ import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
 export interface UserProfile {
+    id: number | null;
     name: string;
     diet: 'omnivoro' | 'vegano' | 'keto' | 'paleo';
     allergies: string[];
@@ -18,6 +19,7 @@ export interface MealPlanItem {
 }
 
 const DEFAULT_PROFILE: UserProfile = {
+    id: null,
     name: '',
     diet: 'omnivoro',
     allergies: [],
@@ -30,6 +32,13 @@ export class UserService {
 
     /** Current user profile */
     readonly profile = signal<UserProfile>(this.loadProfile());
+
+    constructor() {
+        // If no ID exists, trigger guest registration
+        if (this.profile().id === null) {
+            this.registerGuest();
+        }
+    }
 
     /** Meal Plan State */
     readonly mealPlan = signal<MealPlanItem[]>([]);
@@ -66,6 +75,47 @@ export class UserService {
         }
     }
 
+    private isRegistering = false;
+
+    /**
+     * Register a guest user from the backend
+     */
+    private registerGuest(retryCount = 0): void {
+        if (this.isRegistering && retryCount === 0) return;
+        this.isRegistering = true;
+
+        this.http.post<{ success: boolean, data: UserProfile }>('/api/auth/register-guest', {})
+            .subscribe({
+                next: (res) => {
+                    const current = this.profile();
+                    const newProfile: UserProfile = {
+                        ...current,
+                        id: res.data.id,
+                        name: res.data.name
+                    };
+                    this.saveProfile(newProfile);
+                    console.log('Guest session initialized:', res.data.id);
+                    this.isRegistering = false;
+                },
+                error: (err) => {
+                    console.error('Failed to register guest:', err);
+                    if (retryCount < 1) {
+                        console.warn('Retrying guest registration...');
+                        setTimeout(() => this.registerGuest(retryCount + 1), 2000);
+                    } else {
+                        console.error('Guest registration failed after retries. Falling back to Demo 1.');
+                        const current = this.profile();
+                        this.saveProfile({
+                            ...current,
+                            id: 1, // Fallback to Admin Demo
+                            name: 'Invitado (Demo 1)'
+                        });
+                        this.isRegistering = false;
+                    }
+                }
+            });
+    }
+
     /**
      * Reset profile to defaults
      */
@@ -73,6 +123,7 @@ export class UserService {
         localStorage.removeItem(this.STORAGE_KEY);
         this.profile.set({ ...DEFAULT_PROFILE });
         this.mealPlan.set([]);
+        this.registerGuest(); // Get a new guest ID
     }
 
     /**

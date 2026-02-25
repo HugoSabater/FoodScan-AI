@@ -15,11 +15,11 @@ const { sequelize, User, Product } = require('../models');
 
 const demoUsers = [
   {
-    name: 'Hugo Sabater Gavarrell',
-    email: 'hugo@foodscan.ai',
-    password: 'hugo1234',
-    allergies: ['gluten'],
-    dietary_preference: 'keto',
+    name: 'Admin Demo',
+    email: 'admin@foodscan.ai',
+    password: 'admin1234',
+    allergies: [],
+    dietary_preference: 'none',
   },
   {
     name: 'Usuario Vegano Demo',
@@ -29,11 +29,11 @@ const demoUsers = [
     dietary_preference: 'vegan',
   },
   {
-    name: 'Admin Demo',
-    email: 'admin@foodscan.ai',
-    password: 'admin1234',
-    allergies: [],
-    dietary_preference: 'none',
+    name: 'Hugo Sabater Gavarrell',
+    email: 'hugo@foodscan.ai',
+    password: 'hugo1234',
+    allergies: ['gluten'],
+    dietary_preference: 'keto',
   },
 ];
 
@@ -87,6 +87,24 @@ const demoProducts = [
 const seed = async () => {
   try {
     console.info('\n🌱 Starting database seeding...\n');
+
+    // Retry logic for initial connection (useful for Docker)
+    let authenticated = false;
+    let retries = 5;
+    while (!authenticated && retries > 0) {
+      try {
+        await sequelize.authenticate();
+        authenticated = true;
+      } catch (err) {
+        retries -= 1;
+        console.warn(`⚠️ Database not ready... retrying in 5s (${retries} retries left)`);
+        await new Promise(resolve => setTimeout(resolve, 5000));
+      }
+    }
+
+    if (!authenticated) {
+      throw new Error('Could not connect to database after several retries.');
+    }
 
     // Force sync - DESTROYS ALL DATA
     console.info('🗑️  Dropping and recreating all tables...');

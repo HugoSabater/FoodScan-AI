@@ -179,3 +179,42 @@
         border-left: 4px solid $color-danger;
     }
 }
+
+// ── Evaluation Zone (Tribunal) ──────────────
+.c-evaluation-zone {
+    margin-top: $spacing-2xl;
+    padding: $spacing-lg;
+    border: 2px dashed $color-border;
+    border-radius: $radius-lg;
+    background: hsla(0, 0%, 0%, 0.02);
+
+    &__title {
+        display: flex;
+        align-items: center;
+        gap: $spacing-sm;
+        font-size: $font-size-sm;
+        font-weight: $font-weight-bold;
+        color: $color-text-light;
+        margin-bottom: $spacing-xs;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+
+        i {
+            font-size: $font-size-base;
+            color: $color-primary;
+        }
+    }
+
+    &__description {
+        font-size: $font-size-xs;
+        color: $color-text-light;
+        margin-bottom: $spacing-md;
+        line-height: 1.4;
+    }
+
+    &__actions {
+        display: flex;
+        flex-wrap: wrap;
+        gap: $spacing-sm;
+    }
+}

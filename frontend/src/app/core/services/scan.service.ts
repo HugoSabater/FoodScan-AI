@@ -95,7 +95,7 @@ export class ScanService {
         this.http
             .post<ScanResponse>('/api/scan', {
                 barcode,
-                userId: 1, // Keep for database record
+                userId: profile.id || 1, // Use dynamic ID, fallback to 1 if not yet sync'd
                 customProfile, // Send user preferences
             })
             .subscribe({

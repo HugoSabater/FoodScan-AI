@@ -76,33 +76,57 @@ FoodScan-AI/
 
 ---
 
-## 🚀 Instalación Local
+## 🚀 Instalación y Despliegue
 
-### Prerrequisitos
-* Node.js v18+
-* MySQL Server corriendo en puerto 3306
+Puedes ejecutar FoodScan AI de dos maneras: la recomendada (Docker) para un despliegue rápido, o la manual para desarrollo.
 
-### 1. Clonar el repositorio
-```bash
-git clone https://github.com/HugoSabater/FoodScan-AI.git
-cd FoodScan-AI
-```
+### Opción A: Docker (Recomendado 🐳)
 
-### 2. Configurar Backend
-```bash
-cd backend
-cp .env.example .env  # Configura tus credenciales MySQL y Groq API
-npm install
-npm run seed          # 🌱 Carga datos de prueba
-npm run dev           # 🚀 Inicia servidor en puerto 3000
-```
+Ideal para evaluar el proyecto sin configurar entornos locales.
 
-### 3. Configurar Frontend
-```bash
-cd frontend
-npm install
-npm start             # 🌐 Inicia aplicación en http://localhost:4200
-```
+1. **Prerrequisitos**: Docker y Docker Compose instalados.
+2. **Configurar variables**:
+   ```bash
+   cp .env.docker.example .env
+   # Edita .env y añade tu GROQ_API_KEY
+   ```
+3. **Levantar el stack**:
+   ```bash
+   docker-compose up -d --build
+   ```
+4. **Cargar datos demo**:
+   ```bash
+   docker-compose exec backend npm run seed
+   ```
+5. **Acceso**:
+   - **Frontend**: http://localhost (o puerto 8080 según config)
+   - **Backend**: http://localhost:3000
+   - **Adminer**: http://localhost:8888 (Gestión DB)
+
+---
+
+### Opción B: Instalación Manual
+
+Para desarrollo activo y depuración.
+
+1. **Requisitos**: Node.js v18+ y MySQL Server.
+2. **Configurar Backend**:
+   ```bash
+   cd backend
+   cp .env.example .env # Configura tus credenciales locales
+   ```
+   ```bash
+   npm install
+   npm run seed
+   npm run dev
+   ```
+3. **Configurar Frontend**:
+   ```bash
+   cd ../frontend
+   npm install
+   npm start
+   ```
+4. **Acceso**: http://localhost:4200
 
 ---
 

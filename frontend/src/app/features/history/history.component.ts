@@ -1,4 +1,4 @@
-import { Component, OnInit, signal, inject, computed } from '@angular/core';
+import { Component, OnInit, signal, inject, computed, effect } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import { ProductCardComponent, ProductCardData } from '../../shared/components/product-card/product-card.component';
@@ -52,8 +52,18 @@ export class HistoryComponent implements OnInit {
       });
   });
 
+  constructor() {
+    // React to profile changes (e.g., when Guest registration completes or user switches demo)
+    effect(() => {
+      const id = this.userService.profile().id;
+      if (id) {
+        this.loadHistory();
+      }
+    }, { allowSignalWrites: true });
+  }
+
   ngOnInit(): void {
-    this.loadHistory();
+    // Initial load will be handled by the effect once ID is ready
   }
 
   /**
@@ -63,8 +73,8 @@ export class HistoryComponent implements OnInit {
     this.isLoading.set(true);
     this.error.set(null);
 
-    // TODO: Replace with actual user ID from auth system
-    const userId = 1;
+    // Use dynamic user ID from profile
+    const userId = this.userService.profile().id || 1;
 
     this.scanService.getHistory(userId).subscribe({
       next: (response) => {

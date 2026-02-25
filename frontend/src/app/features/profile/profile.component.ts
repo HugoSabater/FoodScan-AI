@@ -75,6 +75,7 @@ export class ProfileComponent implements OnInit {
             );
 
             this.userService.saveProfile({
+                id: this.userService.profile().id,
                 name: formValue.name,
                 diet: formValue.diet,
                 allergies,
@@ -100,5 +101,44 @@ export class ProfileComponent implements OnInit {
         this.initForm();
         this.saveSuccess = false;
         this.saveError = false;
+    }
+
+    /**
+     * Switch to a demo user account or reset to guest
+     * @param userId User ID from seed data (1=Admin, 2=Vegan) or null for guest
+     */
+    switchToDemoUser(userId: number | null): void {
+        const STORAGE_KEY = 'foodscan_user_profile';
+
+        if (userId) {
+            // Update the profile in localStorage to point to the demo ID
+            const stored = localStorage.getItem(STORAGE_KEY);
+            let profile;
+
+            if (stored) {
+                profile = JSON.parse(stored);
+                profile.id = userId;
+                // Update name/diet for visual consistency if switching to specific demo users
+                if (userId === 1) { profile.name = 'Admin (Omnívoro)'; profile.diet = 'omnivoro'; }
+                if (userId === 2) { profile.name = 'Demo Vegano'; profile.diet = 'vegano'; }
+            } else {
+                profile = {
+                    id: userId,
+                    name: userId === 1 ? 'Admin' : 'Vegano',
+                    diet: userId === 1 ? 'omnivoro' : 'vegano',
+                    allergies: []
+                };
+            }
+
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(profile));
+            console.log(`Switching to demo user ${userId}...`);
+        } else {
+            // Clear profile to trigger Guest Registration on reload
+            localStorage.removeItem(STORAGE_KEY);
+            console.log('Resetting to Guest session...');
+        }
+
+        // Force clean reload
+        window.location.reload();
     }
 }

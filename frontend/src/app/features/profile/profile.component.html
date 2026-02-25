@@ -89,5 +89,30 @@
         </div>
 
     </form>
+    
+    <!-- 🧪 TRIBUNAL EVALUATION ZONE -->
+    <div class="c-evaluation-zone">
+        <h3 class="c-evaluation-zone__title">
+            <i class="fa-solid fa-flask"></i>
+            Zona de Evaluación (Tribunal)
+        </h3>
+        <p class="c-evaluation-zone__description">
+            Cambia instantáneamente entre perfiles pre-cargados para verificar historiales y estadísticas.
+        </p>
+        <div class="c-evaluation-zone__actions">
+            <button type="button" class="c-btn c-btn--outline c-btn--sm" (click)="switchToDemoUser(1)">
+                <i class="fa-solid fa-user-shield"></i>
+                Admin (Omnívoro)
+            </button>
+            <button type="button" class="c-btn c-btn--outline c-btn--sm" (click)="switchToDemoUser(2)">
+                <i class="fa-solid fa-leaf"></i>
+                Demo Vegano
+            </button>
+            <button type="button" class="c-btn c-btn--danger-outline c-btn--sm" (click)="switchToDemoUser(null)">
+                <i class="fa-solid fa-user-slash"></i>
+                Reiniciar a Invitado
+            </button>
+        </div>
+    </div>
 
 </section>

@@ -319,6 +319,17 @@ ufw enable
 
 ## 🐛 Troubleshooting
 
+### SequelizeConnectionRefusedError
+**Symptom**: Backend fails to connect to MySQL during startup or seeding.
+
+**Analysis**: This is usually a race condition where the backend starts before MySQL is ready.
+**Solution**: 
+1. We have implemented a **retry logic** in the `seed.js` script that waits for the DB.
+2. In `docker-compose.yml`, we use `depends_on` with `service_healthy`.
+3. If it still fails, try: `docker-compose restart backend`.
+
+---
+
 ### Frontend not loading
 
 **Symptom**: Blank page or 404 errors
@@ -498,6 +509,6 @@ If you encounter issues:
 
 ---
 
-**Last Updated**: 2026-02-13  
+**Last Updated**: 2026-02-26  
 **Docker Version**: 20.10+  
 **Docker Compose Version**: 2.0+

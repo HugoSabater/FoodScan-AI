@@ -31,6 +31,13 @@ router.get('/health', healthController.getHealth);
  */
 router.post('/auth/login', userController.login);
 
+/**
+ * @route   POST /api/auth/register-guest
+ * @desc    Register a new guest user
+ * @access  Public
+ */
+router.post('/auth/register-guest', userController.registerGuest);
+
 // =====================================
 // USERS
 // =====================================

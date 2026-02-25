@@ -13,12 +13,12 @@ A partir del análisis de la arquitectura (Angular 17, Express, Sequelize, Groq 
 
 | Requisito Deducido | Descripción Técnica | Estado | Observaciones |
 | :--- | :--- | :---: | :--- |
-| **Autenticación** | JWT + Bcrypt en el Backend. Roles de usuario. | ✅ | Basado en `User.js` y `auth` middlewares. |
+| **Autenticación** | Sesiones "Guest" + JWT interno. Registro silencioso. | ✅ | Sistema dinámico que evita cruce de datos. |
 | **Escáner de Productos** | Integración con `@zxing/ngx-scanner` y API OFF. | ✅ | Soporte para códigos EAN-13 verificado. |
 | **Análisis Nutricional IA** | Orquestación con `groq-sdk` para promts avanzados. | ✅ | Lógica resiliente con fallbacks. |
-| **Historial de Escaneos** | Persistencia en MySQL con Sequelize (Deduplicación). | ✅ | Implementado vía `uniqueHistory` signal. |
+| **Historial de Escaneos** | Persistencia en MySQL (Aislamiento por User ID). | ✅ | Implementado vía `uniqueHistory` y Guest Sessions. |
 | **Panel de Estadísticas** | Visualización reactiva con Chart.js. | ✅ | Filtrado interactivo por salud y NutriScore. |
-| **PWA / Mobilidad** | Manifest.json y Service Workers configurados. | ✅ | Optimizado para visualización móvil (Bottom Sheets). |
+| **Multi-Tenancy** | Aislamiento de datos por dispositivo/sesión. | ✅ | Verificado con pruebas de concurrencia e incógnito. |
 
 ---
 

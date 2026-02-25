@@ -22,6 +22,11 @@
    - [Sesión 7 — Refinación visual y resiliencia del backend](#sesión-7--refinación-visual-y-resiliencia-del-backend)
    - [Sesión 8 — Refinamiento de interactividad y consistencia de datos](#sesión-8--refinamiento-de-interactividad-y-consistencia-de-datos)
    - [Sesión 9 — Verificación exhaustiva de pre-despliegue](#sesión-9--verificación-exhaustiva-de-pre-despliegue)
+   - [Sesión 10 — Auditoría de Seguridad y Aislamiento de Usuarios](#sesión-10--auditoría-de-seguridad-y-aislamiento-de-usuarios)
+   - [Sesión 11 — Refinamiento de Instalación y Resiliencia Docker](#sesión-11--refinamiento-de-instalación-y-resiliencia-docker)
+   - [Sesión 12 — Aislamiento de Identidad y Estrategia de Usuarios](#sesión-12--aislamiento-de-identidad-y-estrategia-de-usuarios)
+   - [Sesión 13 — Sincronización de Esquema SQL y Semillas](#sesión-13--sincronización-de-esquema-sql-y-semillas)
+   - [Sesión 14 — Estadísticas por Usuario y Reactividad](#sesión-14--estadísticas-por-usuario-y-reactividad)
 4. [Errores cometidos por la IA y cómo se resolvieron](#4--errores-cometidos-por-la-ia-y-cómo-se-resolvieron)
 5. [Prompts que más funcionaron](#5--prompts-que-más-funcionaron)
 6. [Reflexión final del alumno](#6--reflexión-final-del-alumno)
@@ -96,6 +101,13 @@ La IA **no fue un sustituto** del trabajo de programación; fue una herramienta 
 | Configuración de CORS, Helmet y rate limiting | 👨 Alumno (IA ayudó a recordar parámetros) |
 | Prompt engineering para Groq/Llama | 👨 Alumno + iteraciones con IA |
 | Detección de scripts de debug olvidados | 🤖 IA |
+| Auditoría de Seguridad (Multi-Tenancy) | 🤖 IA (identificó riesgo) |
+| Aislamiento de Usuarios / Sesiones Guest | 👨 Alumno + 🤖 IA |
+| Demo Switcher / Zona de Evaluación | 🤖 IA + 👨 Alumno |
+| Refinamiento de Instalación y Docker | 🤖 IA + 👨 Alumno |
+| Aislamiento de Identidad y Demos | 🤖 IA + 👨 Alumno |
+| Sincronización de Esquema SQL | 🤖 IA + 👨 Alumno |
+| Estadísticas por Usuario (Fix) | 🤖 IA + 👨 Alumno |
 | Toma de decisiones sobre qué borrar o mantener | 👨 Alumno |
 | Escritura de este documento | 🤖 IA + revisión y aval del alumno |
 
@@ -383,6 +395,130 @@ Una decisión clave de resiliencia diseñada en sesión conversacional e impleme
 4. **Mejora del CI/CD Local**: Se inyectó el script de `lint` en el `package.json` del frontend para facilitar auditorías futuras.
 
 **Veredicto:** El sistema es resiliente y los servicios están correctamente orquestados y saludables.
+
+---
+
+### Sesión 10 — Auditoría de Seguridad y Aislamiento de Usuarios
+
+**Objetivo:** Garantizar que múltiples usuarios (tribunal o usuarios de la web desplegada en Vercel) puedan usar la app simultáneamente sin cruzar datos (Multi-Tenancy).
+
+**Problema Detectado:** La IA de auditoría detectó que el `userId: 1` estaba hardcodeado en el frontend, lo que provocaba que todos los visitantes compartieran el mismo historial y perfil.
+
+**Prompts utilizados:**
+```
+"Audita el aislamiento de usuarios. Si el Visitante A y el B abren la web a la vez, ¿verán lo mismo? Busca IDs hardcodeados."
+```
+```
+"Implementa un sistema de 'Guest Sessions': el backend debe crear un usuario anónimo en el primer acceso y el frontend guardar ese ID en localStorage."
+```
+
+**Solución Implementada:**
+- **Backend:** Endpoint `POST /api/auth/register-guest` para creación silenciosa de perfiles.
+- **Frontend:** `UserService` gestiona la identidad dinámica. Se ha implementado un **Demo Switcher** en el perfil para facilitar la evaluación del tribunal.
+- **Base de Datos:** Sincronización de `seed.js` e `init.sql` para alinear los IDs de prueba (1: Admin, 2: Vegano) con el selector del frontend.
+
+**Qué hice yo:**
+- Validé que el sistema no requiriera login forzado (manteniendo la fluidez de la demo).
+- Supervisé la creación de la "Zona de Evaluación" en la UI del Perfil.
+- Verifiqué el aislamiento abriendo la web en una ventana normal y otra en incógnito.
+
+**Resultado:** El proyecto es ahora seguro y cuenta con herramientas de depuración/demo integradas para la defensa pública.
+
+---
+
+### Sesión 11 — Refinamiento de Instalación y Resiliencia Docker
+
+**Objetivo:** Eliminar fricciones en el despliegue inicial y resolver errores críticos de conexión detectados en entornos de bajas prestaciones.
+
+**Problema Detectado:** El error `SequelizeConnectionRefusedError` aparecía ocasionalmente al levantar el stack con Docker, debido a que el Backend intentaba conectar antes de que el motor de MySQL hubiera terminado de inicializar los protocolos de red.
+
+**Prompts utilizados:**
+```
+"Separa la instalación por Docker o manual en el README. Revisa porqué puede fallar SequalizeConnectionRefusedError en Docker y soluciónalo con healthchecks más agresivos."
+```
+```
+"Generaliza DOCKER_DEPLOYMENT.md para que lo use cualquier persona, no solo yo. Añade una sección de troubleshooting para la conexión de la BD."
+```
+
+**Solución Implementada:**
+- **Docker Compose:** Se ajustaron los `healthchecks` de MySQL (`interval: 5s`, `retries: 10`) para que el backend espere una señal de "Healthy" real. Se cambió la política de reinicio a `always`.
+- **Backend (seed.js):** Se inyectó un **bucle de reintento (retry loop)** en el script de semillas. Ahora el proceso de carga de datos espera activamente a la base de datos durante 25 segundos antes de abortar.
+- **Documentación:** Se reestructuró el `README.md` en dos bloques: **Opción A (Docker)** para evaluación rápida y **Opción B (Manual)** para desarrollo. Se limpiaron rutas absolutas y referencias personales.
+
+**Qué hice yo:**
+- Corregí el formateo de los bloques de código en el `README.md` que la IA dejó ligeramente desalineados.
+- Verifiqué que el nuevo `seed.js` no entrara en bucle infinito ante un error fatal de credenciales.
+- Actualicé la fecha de fin de mantenimiento en la documentación técnica.
+
+**Resultado:** Instalación "un click" (vía Docker) totalmente funcional y resiliente a race conditions de red.
+
+---
+
+### Sesión 12 — Aislamiento de Identidad y Estrategia de Usuarios
+
+**Objetivo:** Garantizar que cada visitante (usuarios) tenga su propia experiencia aislada sin colisiones de datos, manteniendo los perfiles demo como referencia.
+
+**Problema Detectado:** Al usar un ID fijo (ID 1) como fallback, varios usuarios compartían historial si la sesión de invitado no se completaba instantáneamente.
+
+**Prompts utilizados:**
+```
+"Indica si los usuarios usan todos el mismo id, porque si un profesor lo usa y registra 20 alimentos el segundo tendrá los 20 anteriores. Añade 3 usuarios por defecto más el personalizado (Guest)."
+```
+
+**Solución Implementada:**
+- **Jerarquía de Identidad:** Se implementó una lógica de `Guest -> Demo 1`. Al entrar, la app intenta registrar un nuevo ID único. Si falla tras reintentos, se asigna el ID 1 (Admin) como red de seguridad.
+- **Historial Reactivo:** Se migró el `HistoryComponent` a un modelo basado en `effect`. Ahora, el historial se recarga automáticamente en cuanto el ID de invitado es asignado por el servidor, eliminando condiciones de carrera.
+- **Demo Switcher:** Se mantuvo el selector de usuarios en el perfil para permitir al tribunal alternar entre el usuario "Admin", el "Vegano" y su propia "Sesión de Invitado".
+
+**Qué hice yo:**
+- Refiné la lógica de reintentos en el frontend para evitar bucles de red.
+- Validé que las pestañas en modo incógnito generen IDs correlativos correctos (p.ej. ID 15, 16, 17...).
+
+**Resultado:** Aislamiento total entre usuarios. El tribunal puede probar el sistema simultáneamente sin que sus escaneos se mezclen.
+
+---
+
+### Sesión 13 — Sincronización de Esquema SQL y Semillas
+
+**Objetivo:** Asegurar que el archivo de inicialización de la base de datos (`init.sql`) sea un reflejo exacto de los modelos de Sequelize y contenga los datos de demo actualizados.
+
+**Problema Detectado:** `init.sql` estaba desactualizado: faltaba el tercer usuario demo (Hugo), la tabla de caché de análisis (`analysis_results`) y varias columnas de metadatos en la tabla de escaneos.
+
+**Prompts utilizados:**
+```
+"Audita el archivo backend/src/scripts/init.sql para garantizar la paridad con los modelos de Sequelize y la consistencia de los perfiles demo."
+```
+
+**Solución Implementada:**
+- **Esquema SQL:** Se reescribió `init.sql` para incluir las tablas `analysis_results` (caché global de IA) y las columnas `profile_hash` y `analysis_result` (JSON) en la tabla `scans`.
+- **Datos Demo:** Se sincronizaron los 3 usuarios demo (Admin, Vegano y Hugo) con sus preferencias dietéticas y alergias correspondientes, alineándolos con lo definido en `seed.js`.
+- **Integridad:** Se añadieron cláusulas `ON DELETE CASCADE` en las claves foráneas para mejorar la mantenibilidad de los datos de prueba.
+
+**Qué hice yo:**
+- Revisé que los tipos de datos ENUM en MySQL coincidieran exactamente con los definidos en los modelos de Node.js.
+- Verifiqué que el formato JSON de las alergias fuera compatible con la versión de MySQL utilizada en Docker.
+
+**Resultado:** Coherencia total entre la inicialización manual (SQL) y la automatizada (Sequelize). Base de datos lista para producción y demo.
+
+---
+
+### Sesión 14 — Estadísticas por Usuario y Reactividad
+
+**Objetivo:** Corregir el fallo de aislamiento en la pantalla de estadísticas, donde se mostraban datos del Admin (ID 1) para todos los usuarios.
+
+**Problema Detectado:** `StatsComponent` tenía el ID de usuario hardcodeado (`userId = 1`) para el MVP y no reaccionaba a los cambios de perfil (Guest/Demo).
+
+**Solución Implementada:**
+- **Eliminación de Hardcode:** Se eliminó la asignación estática del ID 1.
+- **Carga Reactiva:** Se implementó un `effect` en el constructor de `StatsComponent` que observa `userService.profile()`. Las estadísticas y el historial se recargan automáticamente cuando el ID de usuario cambia o se inicializa la sesión de invitado.
+- **Robustez:** Se hizo el argumento `userId` opcional en `loadStats` para mayor compatibilidad con las llamadas desde la plantilla HTML (evitando errores de compilación de Angular).
+- **Importaciones:** Se añadió `effect` a las importaciones de `@angular/core` que faltaban.
+
+**Qué hice yo:**
+- Identifiqué que el componente no estaba escuchando los cambios de señal del perfil.
+- Verifiqué que el resto de componentes de la "Zona de Evaluación" (MealPlan) ya estaban integrados con el servicio reactivo.
+
+**Resultado:** Aislamiento de datos real en todas las pantallas. Cada perfil (Invitado, Vegano, Hugo) tiene su propia vista analítica aislada.
 
 ---
 

@@ -232,10 +232,44 @@ const getUserStats = async (req, res, next) => {
   }
 };
 
+/**
+ * Register a new guest user
+ * @route POST /api/auth/register-guest
+ */
+const registerGuest = async (_req, res, next) => {
+  try {
+    const guestId = Math.random().toString(36).substring(2, 10);
+    const guestEmail = `guest_${guestId}_${Date.now()}@foodscan.ai`;
+
+    const user = await User.create({
+      name: `Visitante ${guestId}`,
+      email: guestEmail,
+      password: 'managed_guest_account', // Placeholder, needs pass for model validation
+      dietary_preference: 'none',
+      allergies: [],
+    });
+
+    return res.status(201).json({
+      success: true,
+      message: 'Guest account created',
+      data: {
+        id: user.id,
+        name: user.name,
+        email: user.email,
+        diet: user.dietary_preference,
+        allergies: user.allergies,
+      },
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
 module.exports = {
   login,
   getUserById,
   getAllUsers,
   getMealPlan,
   getUserStats,
+  registerGuest,
 };

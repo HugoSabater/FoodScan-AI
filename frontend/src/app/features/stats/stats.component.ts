@@ -1,4 +1,4 @@
-import { Component, OnInit, inject, signal, computed } from '@angular/core';
+import { Component, OnInit, inject, signal, computed, effect } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { BaseChartDirective } from 'ng2-charts';
 import { ChartConfiguration, ChartData, ChartType } from 'chart.js';
@@ -91,8 +91,18 @@ export class StatsComponent implements OnInit {
         }]
     };
 
+    constructor() {
+        // React to profile changes (e.g., when Guest registration completes or user switches demo)
+        effect(() => {
+            const id = this.userService.profile().id;
+            if (id) {
+                this.loadStats(id);
+            }
+        }, { allowSignalWrites: true });
+    }
+
     ngOnInit(): void {
-        this.loadStats();
+        // Handled by effect
     }
 
     /** Explicit chart click handler for ng2-charts */
@@ -108,16 +118,17 @@ export class StatsComponent implements OnInit {
         }
     }
 
-    loadStats(): void {
-        this.loading.set(true);
-        // TODO: Get real userId from auth service. Hardcoded to 1 for MVP.
-        const userId = 1;
+    loadStats(userId?: number | null): void {
+        const id = userId || this.userService.profile().id;
+        if (!id) return;
 
-        this.userService.getStats(userId).subscribe({
+        this.loading.set(true);
+
+        this.userService.getStats(id).subscribe({
             next: (data) => {
                 this.stats.set(data);
                 this.updateCharts(data);
-                this.loadHistory(userId);
+                this.loadHistory(id);
             },
             error: (err) => {
                 console.error('Error loading stats:', err);

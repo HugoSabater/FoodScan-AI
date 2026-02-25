@@ -22,11 +22,11 @@ services:
     networks:
       - foodscan-network
     healthcheck:
-      test: [ "CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-p${DB_ROOT_PASSWORD:-rootpassword}" ]
-      interval: 10s
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-p$DB_ROOT_PASSWORD"]
+      interval: 5s
       timeout: 5s
-      retries: 5
-      start_period: 30s
+      retries: 10
+      start_period: 15s
 
   # ── Backend API ───────────────────────────
   backend:
@@ -34,7 +34,7 @@ services:
       context: ./backend
       dockerfile: Dockerfile
     container_name: foodscan-backend
-    restart: unless-stopped
+    restart: always
     environment:
       NODE_ENV: production
       PORT: 3000
@@ -56,10 +56,10 @@ services:
       - foodscan-network
     healthcheck:
       test: [ "CMD", "node", "-e", "require('http').get('http://localhost:3000/api/health', (r) => {process.exit(r.statusCode === 200 ? 0 : 1)})" ]
-      interval: 30s
-      timeout: 3s
-      retries: 3
-      start_period: 40s
+      interval: 15s
+      timeout: 5s
+      retries: 5
+      start_period: 20s
 
   # ── Frontend (Angular + Nginx) ────────────
   frontend:
