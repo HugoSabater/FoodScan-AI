@@ -1,18 +1,15 @@
 # 🥗 FoodScan AI - Asistente Nutricional Inteligente
 
+[![CI](https://github.com/HugoSabater/FoodScan-AI/actions/workflows/ci.yml/badge.svg)](https://github.com/HugoSabater/FoodScan-AI/actions/workflows/ci.yml)
 ![Angular](https://img.shields.io/badge/Angular-17+-DD0031?logo=angular)
 ![Node.js](https://img.shields.io/badge/Node.js-20+-339933?logo=nodedotjs)
-![MySQL](https://img.shields.io/badge/MySQL-8.0-00758F?logo=mysql)
 ![AI Powered](https://img.shields.io/badge/AI-Groq%20%2F%20Llama3-blueviolet)
 ![License](https://img.shields.io/badge/license-MIT-green)
 
+> 🚀 **Live Demo:** [https://foodscan-ai-nine.vercel.app](https://foodscan-ai-nine.vercel.app)
+
 > **FoodScan AI** transforma tu móvil en un nutricionista de bolsillo. Escanea códigos de barras y recibe un análisis instantáneo basado en tu perfil único (Alergias, Dietas: Vegano, Keto, etc.) potenciado por Inteligencia Artificial.
 
----
-
-## 🚀 Demo en Vivo
-
-👉 **[Ver Proyecto Desplegado](https://foodscan-ai-nine.vercel.app/)**
 
 ---
 
