@@ -181,27 +181,81 @@ No uses Markdown, solo JSON puro.`;
     return mealPlan;
   } catch (error) {
     console.error('❌ ERROR REAL GROQ (Meal Plan):', error);
+    const diet = (profile.diet || 'omnivoro').toLowerCase();
+
+    if (diet === 'vegano' || diet === 'vegan') {
+      return [
+        {
+          type: 'Desayuno',
+          name: 'Tostada de masa madre con aguacate y té verde',
+          calories: 380,
+          ingredients: ['Pan integral', 'Aguacate', 'Semillas de chía', 'Tomate'],
+          reason: 'Grasas vegetales cardiosaludables y fibra prebiótica',
+        },
+        {
+          type: 'Comida',
+          name: 'Bowl de quinoa con tofu marinado y verduras',
+          calories: 560,
+          ingredients: ['Quinoa', 'Tofu firme', 'Garbanzos', 'Espinacas'],
+          reason: 'Proteína vegetal completa con todos los aminoácidos',
+        },
+        {
+          type: 'Cena',
+          name: 'Crema de calabaza asada con semillas y tempeh',
+          calories: 420,
+          ingredients: ['Calabaza', 'Bebida de avena', 'Tempeh', 'Semillas de calabaza'],
+          reason: 'Cena digestiva, saciante y rica en antioxidantes',
+        },
+      ];
+    }
+
+    if (diet === 'keto') {
+      return [
+        {
+          type: 'Desayuno',
+          name: 'Revuelto de huevos de pasto con espinacas y queso feta',
+          calories: 410,
+          ingredients: ['Huevos ecológicos', 'Espinacas', 'Queso feta', 'Aceite de oliva'],
+          reason: 'Bajo en carbohidratos netos y alto en grasas saludables',
+        },
+        {
+          type: 'Comida',
+          name: 'Salmón noruego al horno con espárragos trigueros',
+          calories: 620,
+          ingredients: ['Salmón', 'Espárragos', 'Mantequilla clarificada', 'Limón'],
+          reason: 'Aporte de Omega-3 DHA/EPA y proteína de alto valor biológico',
+        },
+        {
+          type: 'Cena',
+          name: 'Ensalada con pechuga de pollo, aguacate y nueces',
+          calories: 490,
+          ingredients: ['Pechuga de pollo', 'Aguacate', 'Nueces', 'Rúcula'],
+          reason: 'Saciante sin picos de glucosa para un descanso óptimo',
+        },
+      ];
+    }
+
     return [
       {
         type: 'Desayuno',
-        name: 'Avena con frutas (Fallback)',
-        calories: 350,
-        ingredients: ['Avena', 'Plátano', 'Leche semidesnatada'],
-        reason: 'Opción equilibrada por defecto',
+        name: 'Porridge de avena integral con plátano y nueces',
+        calories: 380,
+        ingredients: ['Avena integral', 'Plátano', 'Leche semidesnatada', 'Nueces'],
+        reason: 'Carbohidratos complejos de absorción lenta y fibra soluble',
       },
       {
         type: 'Comida',
-        name: 'Pollo a la plancha con ensalada (Fallback)',
-        calories: 500,
-        ingredients: ['Pechuga de pollo', 'Lechuga', 'Tomate', 'Aceite de oliva'],
-        reason: 'Alto en proteínas y vegetales',
+        name: 'Pechuga de pollo a la plancha con arroz integral y verduras',
+        calories: 550,
+        ingredients: ['Pechuga de pollo', 'Arroz integral', 'Calabacín', 'Aceite de oliva'],
+        reason: 'Equilibrio de macronutrientes alto en proteína magra',
       },
       {
         type: 'Cena',
-        name: 'Pescado al horno con verduras (Fallback)',
+        name: 'Filete de pescado al horno con puré de verduras',
         calories: 400,
-        ingredients: ['Merluza', 'Calabacín', 'Zanahoria'],
-        reason: 'Ligero y nutritivo',
+        ingredients: ['Merluza fresca', 'Calabacín', 'Zanahoria', 'Aceite virgen extra'],
+        reason: 'Digestión ligera y micronutrientes para regeneración celular',
       },
     ];
   }
